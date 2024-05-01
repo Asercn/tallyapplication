@@ -1,0 +1,33 @@
+{
+  "color": [
+    {
+      "name": "start_window_background",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "primary_color",
+      "value": "#39c5bb"
+    },
+    {
+      "name": "light_primary_color",
+      "value": "#55efc4"
+    },
+    {
+      "name": "dark_primary_color",
+      "value": "#00b894"
+    },
+    {
+      "name": "contrast_primary_color",
+      "value": "#bb39c5"
+    },
+    {
+      "name": "dark_contrast_primary_color",
+      "value": "#9400b8"
+    },
+    {
+      "name": "light_contrast_primary_color",
+      "value": "#e056fd"
+    }
+
+  ]
+}
