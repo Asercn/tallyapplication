@@ -1,7 +1,17 @@
+import router from '@ohos.router'
+
 @Entry
 @Component
 struct Welcome {
-  @State message: string = 'Hello World'
+
+  aboutToAppear(){
+    setTimeout(()=>{
+      router.replaceUrl({
+        url:router.getState().path + 'Index'
+      })
+    },2000)
+  }
+
 
   build() {
     Row(){
@@ -38,8 +48,9 @@ struct Welcome {
         // 名字
         Row(){
           Text($r('app.string.app_name'))
-            .fontSize(70)
+            .fontSize(60)
             .fontColor($r('app.color.light_contrast_primary_color'))
+
         }
         // app图片
         Row(){
