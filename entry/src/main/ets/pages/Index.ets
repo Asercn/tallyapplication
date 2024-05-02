@@ -17,7 +17,8 @@ struct Index {
 
   // 首页头部
   @Builder header(){
-    Row(){
+    Flex({direction:FlexDirection.Row}){
+      Row().layoutWeight(1)
       Stack(){
         Text('首页')
           .offset({y:2})
@@ -28,16 +29,25 @@ struct Index {
           .fontColor(Color.White)
           .fontSize(this.titleFont)
       }
+      .layoutWeight(1)
 
-      Button(){
-        Image($r('app.media.setting_primary')).width(50)
-      }.onClick((event: ClickEvent) => {
+      // 设置按钮
+      Row(){
+        Button(){
+          Image($r('app.media.setting_primary')).width(50)
+        }
+        .backgroundColor(Color.Transparent)
+        .onClick((event: ClickEvent) => {
+          // 打开设计面板或者页面
 
-      })
+        })
+      }
+      .justifyContent(FlexAlign.End)
+      .layoutWeight(1)
 
     }
+    .padding(10)
     .shadow({radius:5,offsetY:2})
-    .justifyContent(FlexAlign.Center)
     .width('100%')
     .height(80)
     .backgroundColor($r('app.color.primary_color'))
@@ -46,10 +56,25 @@ struct Index {
   // 首页中间部分
   @Builder main(){
     Column(){
-      Row(){
+      Column(){
+        Row(){
+          Text('今日支出')
+            .fontColor($r('app.color.primary_color'))
+        }
+        .width('100%')
+        .justifyContent(FlexAlign.Center)
 
+        Row(){
+          Text(`消费400元`)
+          Blank()
+          Text(`预算:1000元`)
+        }
       }
+      .justifyContent(FlexAlign.Start)
+      .alignItems(HorizontalAlign.Start)
       .cardStyle()
+
+
 
     }
     .padding(10)
@@ -74,6 +99,7 @@ struct Index {
 }
 
 @Styles function cardStyle(){
+  .padding(10)
   .backgroundColor(Color.White)
   .width('100%')
   .height(150)
