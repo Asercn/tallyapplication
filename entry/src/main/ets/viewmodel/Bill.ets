@@ -26,16 +26,12 @@ export default class Bill{
    * 收入还是支出类型
    */
   isExpend:boolean=true
-  /**
-   * 账单颜色
-   */
-  color?:string
+
 
   constructor(amount: number,
               date: Date,
               isExpend: boolean,
               label: string,
-              color?:string,
               id?: number,
               groupId?: number) {
     this.id = id
@@ -44,7 +40,6 @@ export default class Bill{
     this.amount = amount
     this.date = date
     this.isExpend = isExpend
-    this.color = color
   }
 
 }
