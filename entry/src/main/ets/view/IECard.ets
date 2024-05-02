@@ -93,7 +93,7 @@ export default struct IECard {
       Row(){
         Text(`今日收入 ${this.income} 元`)
           .fontSize(14)
-          .fontColor($r('app.color.dark_primary_color'))
+          .fontColor($r('app.color.contrast_primary_color'))
       }
       .margin({top:10})
 
