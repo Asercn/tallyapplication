@@ -1,24 +1,23 @@
 import colorUtil from '../common/utils/ColorUtil';
+import DateUtil from '../common/utils/DateUtil';
+import allBillCard from '../view/AllBillCard';
 import IECard from '../view/IECard';
 import Bill from '../viewmodel/Bill';
 
 @Entry
 @Component
 struct Index {
-  @State titleFont:number = 40
-  @Provide total:number = 100
+  @State titleFont:number = 30
+  @Provide total:number = 1300
   @Provide sumValue:number = 0
   @Provide income:number = 0
   @Provide values:Bill[] = [
-    new Bill(70.00,1411111,true,'测试数据1',this.randomColor(),1),
-    new Bill(10.00,1411111,true,'测试数据2',this.randomColor(),1),
-    new Bill(25.00,1411111,true,'测试数据3',this.randomColor(),1),
-    new Bill(45.00,1411111,true,'测试数据4',this.randomColor(),1),
-    new Bill(65.00,1411111,true,'测试数据5',this.randomColor(),1),
-    new Bill(2.00,1411111,true,'测试数据5',this.randomColor(),1),
-    new Bill(65.00,1411111,true,'测试数据5',this.randomColor(),1),
-    new Bill(65.00,1411111,true,'测试数据5',this.randomColor(),1),
-    new Bill(65.00,1411111,true,'测试数据5',this.randomColor(),1),
+    new Bill(70.00,new Date(),true,'测试数据1',this.randomColor(),1),
+    new Bill(10.00,new Date(),true,'测试数据2',this.randomColor(),1),
+    new Bill(25.00,new Date(),true,'测试数据3',this.randomColor(),1),
+    new Bill(45.00,new Date(),true,'测试数据4',this.randomColor(),1),
+    new Bill(65.00,new Date(),true,'测试数据5',this.randomColor(),1),
+
   ]
 
   // 获取今日的账单
@@ -38,6 +37,7 @@ struct Index {
     this.values = this.values.sort((a,b)=>b.amount-a.amount)
   }
   aboutToAppear(){
+    console.log('testTag','Index',DateUtil.getWeek(new Date()))
     this.initValue()
     this.getSum()
   }
@@ -50,6 +50,7 @@ struct Index {
       this.main()
       // 页脚
       Blank()
+
       this.footer()
     }
     .width('100%')
@@ -76,7 +77,7 @@ struct Index {
       Row(){
         Button(){
           Stack(){
-            Image($r('app.media.setting_primary')).width(50).offset({y:3})
+            Image($r('app.media.setting_primary')).width(30).offset({y:3})
               .renderMode(ImageRenderMode.Template)
               .colorFilter([
                 .5,0,0,0,0,
@@ -87,7 +88,7 @@ struct Index {
               .blur(5)
               // .opacity(.5)
 
-            Image($r('app.media.setting_primary')).width(50)
+            Image($r('app.media.setting_primary')).width(30)
 
           }
         }
@@ -104,7 +105,7 @@ struct Index {
     .padding(10)
     .shadow({radius:5,offsetY:2})
     .width('100%')
-    .height(80)
+    .height(50)
     .backgroundColor($r('app.color.primary_color'))
   }
 
@@ -115,17 +116,25 @@ struct Index {
         // 封装后的卡片
         IECard()
 
-        Text('下面面板正在施工')
         // 账单总图
+        allBillCard()
+
+        // 今日详情消费
         Column(){
 
         }
-        .backgroundColor('#cfcfcf')
-        .width('100%')
+        .cardStyle()
+
+
       }
+      // .backgroundColor('green')
+      .height('100%')
     }
+    // .backgroundColor('red')
+    .layoutWeight(1)
     .padding(10)
   }
+
 
   // 首页页脚
   @Builder footer(){
@@ -144,4 +153,14 @@ struct Index {
     .alignItems(VerticalAlign.Bottom)
     .shadow({radius:15})
   }
+}
+
+
+@Styles function cardStyle(){
+  .padding(10)
+  .backgroundColor(Color.White)
+  .width('100%')
+  .shadow({radius:10,color:Color.Gray})
+
+  .borderRadius(20)
 }

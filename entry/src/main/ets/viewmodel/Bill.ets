@@ -21,7 +21,7 @@ export default class Bill{
   /**
    * 账单日期
    */
-  date:number
+  date:Date
   /**
    * 收入还是支出类型
    */
@@ -32,7 +32,7 @@ export default class Bill{
   color?:string
 
   constructor(amount: number,
-              date: number,
+              date: Date,
               isExpend: boolean,
               label: string,
               color?:string,
