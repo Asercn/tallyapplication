@@ -66,9 +66,12 @@ struct Index {
 
         Row(){
           Text(`消费400元`)
+            .fontColor($r('app.color.primary_color'))
           Blank()
           Text(`预算:1000元`)
+            .fontColor(Color.Gray).fontSize(12)
         }
+        .width('100%')
       }
       .justifyContent(FlexAlign.Start)
       .alignItems(HorizontalAlign.Start)
