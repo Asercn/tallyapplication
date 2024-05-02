@@ -1,19 +1,24 @@
 import colorUtil from '../common/utils/ColorUtil';
+import IECard from '../view/IECard';
 import Bill from '../viewmodel/Bill';
 
 @Entry
 @Component
 struct Index {
   @State titleFont:number = 40
-  @State total:number = 100
-  @State sumValue:number = 0
-  @State income:number = 0
-  @State values:Bill[] = [
+  @Provide total:number = 100
+  @Provide sumValue:number = 0
+  @Provide income:number = 0
+  @Provide values:Bill[] = [
     new Bill(70.00,1411111,true,'测试数据1',this.randomColor(),1),
     new Bill(10.00,1411111,true,'测试数据2',this.randomColor(),1),
     new Bill(25.00,1411111,true,'测试数据3',this.randomColor(),1),
     new Bill(45.00,1411111,true,'测试数据4',this.randomColor(),1),
-    new Bill(45.00,1411111,true,'测试数据5',this.randomColor(),1),
+    new Bill(65.00,1411111,true,'测试数据5',this.randomColor(),1),
+    new Bill(2.00,1411111,true,'测试数据5',this.randomColor(),1),
+    new Bill(65.00,1411111,true,'测试数据5',this.randomColor(),1),
+    new Bill(65.00,1411111,true,'测试数据5',this.randomColor(),1),
+    new Bill(65.00,1411111,true,'测试数据5',this.randomColor(),1),
   ]
 
   // 获取今日的账单
@@ -38,21 +43,23 @@ struct Index {
   }
 
   build() {
-    Scroll(){
-      Column() {
-        this.header()
-        this.main()
-        this.footer()
-      }
-      .width('100%')
-      .height('100%')
+    Column() {
+      // 头部
+      this.header()
+      // 主要内容
+      this.main()
+      // 页脚
+      Blank()
+      this.footer()
     }
+    .width('100%')
+    .height('100%')
   }
 
 
   // 首页头部
   @Builder header(){
-    Flex({direction:FlexDirection.Row}){
+    Row(){
       Row().layoutWeight(1)
       Stack(){
         Text('首页')
@@ -103,73 +110,21 @@ struct Index {
 
   // 首页中间部分
   @Builder main(){
-    Column(){
+    Scroll(){
       Column(){
-        // 卡片标题
-        Row(){
-          Text('今日收支')
-            .fontColor($r('app.color.primary_color'))
-        }
-        .width('100%')
-        .justifyContent(FlexAlign.Center)
-        // 消费进度条文字
-        Row(){
-          Text(`消费${this.sumValue}元`)
-            .fontColor($r('app.color.primary_color'))
-          Blank()
-          Text(`预算:${this.total}元`)
-            .fontColor(Color.Gray).fontSize(12)
-        }
-        .width('100%')
-        // 消费进度条
-        Row(){
-          Stack(){
-            ForEach(this.values,(bill:Bill)=>{
-              Progress({value:bill.amount,total:this.total})
-                .color(bill.color)
-                .style({
-                  strokeWidth:10
-                })
-            })
-          }
-        }
-        .margin({top:10})
+        // 封装后的卡片
+        IECard()
 
-        // 收入字样
-        Row(){
-          Text(`收入 ${this.income} 元`)
-            .fontSize(14)
-            .fontColor($r('app.color.dark_primary_color'))
-        }
-        // 图例
-        Scroll(){
-          Row({space:10}){
-            ForEach(this.values,(bill:Bill)=>{
-              this.tl({text:'www',color:bill.color})
-            })
-          }
-          .margin({top:20})
-        }
+        Text('下面面板正在施工')
+        // 账单总图
+        Column(){
 
+        }
+        .backgroundColor('#cfcfcf')
+        .width('100%')
       }
-      .justifyContent(FlexAlign.Start)
-      .alignItems(HorizontalAlign.Start)
-      .cardStyle()
-
-
-
     }
     .padding(10)
-    .layoutWeight(1)
-  }
-
-  @Builder tl($$:{text:string,color:ResourceColor}){
-    Row({space:2}){
-      Rect({width:7,height:7}).fill($$.color)
-      Text($$.text)
-        .fontSize(12)
-        .fontColor(Color.Gray)
-    }
   }
 
   // 首页页脚
@@ -181,20 +136,12 @@ struct Index {
       .backgroundColor($r('app.color.primary_color'))
       .width('100%')
       .height(80)
+      .shadow({radius:20})
     }
     .width('100%')
     .height(100)
     .backgroundColor($r('app.color.dark_primary_color'))
     .alignItems(VerticalAlign.Bottom)
+    .shadow({radius:15})
   }
-}
-
-@Styles function cardStyle(){
-  .padding(10)
-  .backgroundColor(Color.White)
-  .width('100%')
-  .height(150)
-  .shadow({radius:10,color:Color.Gray})
-
-  .borderRadius(20)
 }
