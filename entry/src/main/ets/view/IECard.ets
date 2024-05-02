@@ -1,11 +1,12 @@
 import Bill from '../viewmodel/Bill'
+import BillType from '../viewmodel/BillType'
 
 @Component
 export default struct IECard {
   @Consume sumValue:number
   @Consume total:number
   @Consume income:number
-  @Consume values:Bill[]
+  @Consume values:BillType[]
 
 
   build() {
@@ -57,13 +58,13 @@ export default struct IECard {
       .width('100%')
 
       // 消费柱状图
-      Row(){
+      Scroll(){
         Row(){
-          ForEach(this.values,(bill:Bill)=>{
-            Progress({value:bill.amount,total:this.total})
+          ForEach(this.values,(billtype:BillType)=>{
+            Progress({value:billtype.sumValue,total:billtype.budget})
               .width(20)
               .height(80)
-              .color(bill.color)
+              .color(billtype.color)
               .rotate({angle:180})
               .style({
                 strokeWidth:10
@@ -73,14 +74,16 @@ export default struct IECard {
         .width('100%')
         .justifyContent(FlexAlign.Center)
       }
+      .scrollable(ScrollDirection.Horizontal)
+      .scrollBar(BarState.Off)
       .margin({top:10})
 
 
       // 图例
       Scroll(){
         Row({space:10}){
-          ForEach(this.values,(bill:Bill)=>{
-            this.tl({text:'图例',color:bill.color})
+          ForEach(this.values,(billtype:BillType)=>{
+            this.tl({text:`${billtype.name}`,color:billtype.color})
           })
         }
         .margin({top:5})
