@@ -245,9 +245,25 @@ struct Index {
   // 首页页脚
   @Builder footer(){
     Row(){
-      Row(){
+      Row({space:20}){
+        Button('历史账单')
+          .buttonStyle()
+          .onClick((event: ClickEvent) => {
+          
+        })
+        Button('记一账')
+          .buttonStyle()
+          .onClick((event: ClickEvent) => {
+
+          })
+        Button('更多')
+          .buttonStyle()
+          .onClick((event: ClickEvent) => {
+
+          })
 
       }
+      .justifyContent(FlexAlign.SpaceEvenly)
       .backgroundColor($r('app.color.primary_color'))
       .width('100%')
       .height(80)
@@ -269,4 +285,13 @@ struct Index {
   .shadow({radius:10,color:Color.Gray})
 
   .borderRadius(20)
+}
+
+@Extend(Button)function buttonStyle(){
+  .backgroundColor($r('app.color.light_primary_color'))
+  .borderRadius('50%')
+  .width(70)
+  .height(70)
+  .shadow({radius:10,color:'#4f4f4f'})
+  .offset({y:-15})
 }
