@@ -126,8 +126,8 @@ struct Index {
         // 今日详情消费
         Column(){
           Text('今日详情')
-            .fontColor($r('app.color.dark_contrast_primary_color'))
-            .fontSize(20)
+            .fontColor(Color.White)
+            .fontSize(18)
             .fontWeight(FontWeight.Bolder)
           List({space:10}){
             ForEach(this.values,(billtype:BillType)=>{
@@ -185,9 +185,11 @@ struct Index {
             })
           }
         }
-        .cardStyle()
         .margin({top:10})
         .backgroundColor('#cfcfcf')
+        .borderRadius(20)
+        .width('100%')
+        .padding(10)
 
 
       }
