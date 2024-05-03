@@ -3,9 +3,17 @@ import hilog from '@ohos.hilog';
 import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
+import DbUtil from '../common/utils/DbUtil';
+import billModel from '../model/BillModel';
+import billTypeModel from '../model/BillTypeModel';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    DbUtil.initDB(this.context)
+    //初始化账单表
+    DbUtil.createTable(billModel.getCreateTableSql())
+    //初始化账单类型表
+    DbUtil.createTable(billTypeModel.getCreateTableSql())
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
 

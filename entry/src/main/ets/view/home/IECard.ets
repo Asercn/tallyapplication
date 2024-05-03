@@ -1,5 +1,5 @@
-import Bill from '../viewmodel/Bill'
-import BillType from '../viewmodel/BillType'
+import Bill from '../../viewmodel/Bill'
+import BillType from '../../viewmodel/BillType'
 
 @Component
 export default struct IECard {

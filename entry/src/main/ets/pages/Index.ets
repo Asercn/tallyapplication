@@ -1,7 +1,7 @@
 import colorUtil from '../common/utils/ColorUtil';
 import DateUtil from '../common/utils/DateUtil';
-import allBillCard from '../view/AllBillCard';
-import IECard from '../view/IECard';
+import allBillCard from '../view/home/AllBillCard';
+import IECard from '../view/home/IECard';
 import Bill from '../viewmodel/Bill';
 import BillType from '../viewmodel/BillType';
 
@@ -9,7 +9,9 @@ import BillType from '../viewmodel/BillType';
 @Component
 struct Index {
   @State titleFont:number = 30
+  @State title:string = '首页'
   @State items:any = [1,2,3]
+  @State currentIndex:number = 0
 
   @Provide total:number = 1300
   @Provide sumValue:number = 0
@@ -47,31 +49,83 @@ struct Index {
   }
 
   build() {
-    Column() {
-      // 头部
-      this.header()
-      // 主要内容
-      this.main()
-      // 页脚
-      Blank()
-
-      this.footer()
+    Tabs({barPosition:BarPosition.End}){
+      TabContent(){
+        Column() {
+          // 头部
+          this.header({title:this.title})
+          // 主要内容
+          this.main()
+          // 页脚
+          // Blank()
+          // this.footer()
+        }
+        .width('100%')
+        .height('100%')
+      }
+      .tabBar(this.TabBuilder('首页',0,$r('app.media.home_select'),$r('app.media.home')))
+      TabContent(){
+        // 账单记录页面
+      }
+      .tabBar(this.TabBuilder('账单记录',1,$r('app.media.historicalBill_select'),$r('app.media.historicalBill')))
     }
-    .width('100%')
+    .onChange((index:number)=>{
+      this.currentIndex = index
+    })
+
+  }
+
+  // 自定义tabBar
+  @Builder TabBuilder(title: string, targetIndex: number, selectedImg: Resource, normalImg: Resource) {
+    Row(){
+      Column() {
+        Stack(){
+          Image(this.currentIndex === targetIndex ? selectedImg : normalImg)
+            .size({ width: 25, height: 25 })
+            .offset({y:2})
+            .blur(2)
+            .colorFilter([
+              .5,0,0,0,0,
+              0,.5,0,0,0,
+              0,0,.5,0,0,
+              1,1,1,1,0
+            ])
+          Image(this.currentIndex === targetIndex ? selectedImg : normalImg)
+            .size({ width: 25, height: 25 })
+        }
+        Stack(){
+          Text(title)
+            .fontColor(Color.Gray)
+            .offset({y:2})
+          Text(title)
+            .fontColor(this.currentIndex === targetIndex ? $r('app.color.light_primary_color') : Color.White)
+        }
+      }
+      .backgroundColor($r('app.color.primary_color'))
+      .width('100%')
+
+      .border({color:{top:Color.Gray},width:{top:1}})
+      .height('90%')
+      .justifyContent(FlexAlign.Center)
+    }
+    .alignItems(VerticalAlign.Bottom)
+    .border({color:{top:Color.Gray},width:{top:1}})
     .height('100%')
+    .width('100%')
+    .backgroundColor($r('app.color.dark_primary_color'))
   }
 
 
   // 首页头部
-  @Builder header(){
+  @Builder header($$:{title:string}){
     Row(){
       Row().layoutWeight(1)
       Stack(){
-        Text('首页')
+        Text($$.title)
           .offset({y:2})
           .fontColor(Color.Gray)
           .fontSize(this.titleFont)
-        Text('首页')
+        Text($$.title)
           .fontColor(Color.White)
           .fontSize(this.titleFont)
       }

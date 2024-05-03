@@ -9,6 +9,7 @@ export default class BillType{
   color:string
   // 组内总金额
   sumValue:number = 0
+  // 组预算
   budget:number
 
   constructor(name: string = '其它',
@@ -21,7 +22,6 @@ export default class BillType{
     this.budget = budget
     this.sumValue = sumValue
     this.id = id
-
   }
 
 }
