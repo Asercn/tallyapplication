@@ -9,6 +9,8 @@ export default struct homeIndex {
   title:string = '首页'
   titleFont:number = 30
 
+  @State isPanelShow:boolean = false
+
 
 
 
@@ -23,9 +25,7 @@ export default struct homeIndex {
       this.header({title:this.title})
       // 主要内容
       this.main()
-      // 页脚
-      // Blank()
-      // this.footer()
+
     }
     .width('100%')
     .height('100%')
