@@ -1,6 +1,7 @@
 import colorUtil from '../../common/utils/ColorUtil'
 import BillType from '../../viewmodel/BillType'
 import allBillCard from './AllBillCard'
+import detailsBillCard from './detailsBillCard'
 import IECard from './IECard'
 
 @Component
@@ -8,7 +9,6 @@ export default struct homeIndex {
   title:string = '首页'
   titleFont:number = 30
 
-  @State items:any = [1,2,3]
 
 
 
@@ -85,90 +85,45 @@ export default struct homeIndex {
 
   // 首页中间部分
   @Builder main(){
-    Scroll(){
-      Column(){
-        // 封装后的卡片
-        IECard()
+    Stack(){
+      // 固定定位按钮
+      Row(){
+        Button('新增+')
+          .position({x:'100%',y:'50%'})
+          .translate({x:'-100%'})
+          .onClick(()=>{
 
-        // 账单总图
-        allBillCard()
+          })
+      }
+      .opacity(.5)
+      .backgroundColor('red')
+      .zIndex(1000)
 
-        // 今日详情消费
+      Scroll(){
         Column(){
-          Text('今日详情')
-            .fontColor(Color.White)
-            .fontSize(18)
-            .fontWeight(FontWeight.Bolder)
-          List({space:10}){
-            ForEach(this.values,(billtype:BillType)=>{
-              ListItemGroup({header:this.ListHead({title:billtype.name,sumValue:billtype.sumValue,budget:billtype.budget,color:billtype.color})}){
-                ForEach(this.items,(item,index:number)=>{
-                  ListItem(){
-                    if (index === this.items.length-1){
-                      Row(){
-                        Column(){
-                          Row(){
-                            Text('原神大礼包')
-                            Blank()
-                            Text('684.00')
-                          }
-                          .width('100%')
-                          Row(){
-                            Text('10:48:23')
-                              .fontColor('#cfcfcf')
-                              .fontSize(12)
-                          }
-                          .width('100%')
-                        }
-                      }
-                      .padding(10)
-                      .offset({x:15})
-                      .backgroundColor(Color.White)
-                      .width('90%')
-                      .borderRadius({bottomLeft:20,bottomRight:20})
-                      .border({width:{bottom:2},color:Color.Gray})
-                    } else {
-                      Row(){
-                        Column(){
-                          Row(){
-                            Text('原神大礼包')
-                            Blank()
-                            Text('684.00')
-                          }
-                          .width('100%')
-                          Row(){
-                            Text('10:48:23')
-                              .fontColor('#cfcfcf')
-                              .fontSize(12)
-                          }
-                          .width('100%')
-                        }
-                      }
-                      .padding(10)
-                      .offset({x:15})
-                      .backgroundColor(Color.White)
-                      .width('90%')
-                    }
-                  }
-                })
-              }
-            })
-          }
+          // 封装后的卡片
+          IECard()
+          // 账单总图
+          allBillCard()
+          // 今日详情消费
+          detailsBillCard()
+
+
         }
-        .margin({top:10})
-        .backgroundColor('#cfcfcf')
-        .borderRadius(20)
+        .align(Alignment.Top)
         .width('100%')
-        .padding(10)
+        // .backgroundColor('green')
 
 
       }
-      // .backgroundColor('green')
+      .scrollable(ScrollDirection.Vertical)
+      .scrollBar(BarState.Off)
+      // .backgroundColor('red')
+      .layoutWeight(1)
+      .padding(10)
     }
-    .scrollBar(BarState.Off)
-    // .backgroundColor('red')
     .layoutWeight(1)
-    .padding(10)
+
   }
   // 首页页脚
   @Builder footer(){
