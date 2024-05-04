@@ -3,6 +3,7 @@ import Bill from '../../viewmodel/Bill';
 import BillType from '../../viewmodel/BillType';
 import GroupInfo from '../../viewmodel/GroupInfo';
 import DateUtil from '../utils/DateUtil';
+import DbUtil from '../utils/DbUtil';
 
 class BillService{
 
@@ -37,4 +38,27 @@ class BillService{
   }
 
 
+  /**
+   * 根据日期查询所有的bill
+   * @param date
+   * @returns
+   */
+  getBill(date?:Date){
+    if (date) {
+      return BillModel.listByDate(date.getTime())
+    }else{
+      return BillModel.listByDate(new Date().getTime())
+    }
+
+  }
+
+
+  getAllBill(){
+    return BillModel.list()
+  }
+
+
 }
+
+let billService = new BillService()
+export default billService as BillService

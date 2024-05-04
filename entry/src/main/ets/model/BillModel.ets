@@ -38,7 +38,7 @@ class BillModel{
    * @returns
    */
   insert(bill:Bill):Promise<number>{
-    console.log('testTag','RecordModel','insert()',JSON.stringify(bill));
+    console.log('testTag','BillModel','insert()',JSON.stringify(bill));
     return DbUtil.insert(TABLE_NAME,bill,COLUMNS)
   }
 
@@ -83,6 +83,16 @@ class BillModel{
     let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
     predicates.between('date',minDate,maxDate)
     return DbUtil.queryForList(predicates,COLUMNS)
+  }
+
+
+  /**
+   * 查询所有的bill
+   * @returns
+   */
+  list():Promise<Bill[]>{
+    let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
+    return DbUtil.queryForList<Bill>(predicates,COLUMNS)
   }
 }
 

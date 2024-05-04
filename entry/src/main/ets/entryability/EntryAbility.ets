@@ -9,13 +9,20 @@ import billTypeModel from '../model/BillTypeModel';
 
 export default class EntryAbility extends UIAbility {
   async onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): Promise<void> {
-    DbUtil.initDB(this.context)
+    // 初始化数据库
+    await DbUtil.initDB(this.context).then(()=>{
+      console.log('testTag','EntryAbility','初始化数据库成功！')
+    })
     //初始化账单表
-    await DbUtil.createTable(billModel.getCreateTableSql())
-    console.log('testTag','EntryAbility','账单表初始化成功！')
+    DbUtil.createTable(billModel.getCreateTableSql()).then(()=>{
+
+      console.log('testTag','EntryAbility','账单表初始化成功！')
+    })
     //初始化账单类型表
-    await DbUtil.createTable(billTypeModel.getCreateTableSql())
-    console.log('testTag','EntryAbility','账单分组初始化成功！')
+    DbUtil.createTable(billTypeModel.getCreateTableSql()).then(()=>{
+
+      console.log('testTag','EntryAbility','账单分组初始化成功！')
+    })
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
 

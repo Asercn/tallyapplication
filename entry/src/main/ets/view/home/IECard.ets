@@ -1,12 +1,13 @@
 import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
+import GroupInfo from '../../viewmodel/GroupInfo'
 
 @Component
 export default struct IECard {
   @Consume sumValue:number
   @Consume total:number
   @Consume income:number
-  @Consume values:BillType[]
+  @Consume values:GroupInfo<BillType,Bill[]>[]
 
 
   build() {
@@ -60,11 +61,11 @@ export default struct IECard {
       // 消费柱状图
       Scroll(){
         Row(){
-          ForEach(this.values,(billtype:BillType)=>{
-            Progress({value:billtype.sumValue,total:billtype.budget})
+          ForEach(this.values,(group:GroupInfo<BillType,Bill[]>)=>{
+            Progress({value:group.type.sumValue,total:group.type.budget})
               .width(20)
               .height(80)
-              .color(billtype.color)
+              .color(group.type.color)
               .rotate({angle:180})
               .style({
                 strokeWidth:10
@@ -82,8 +83,8 @@ export default struct IECard {
       // 图例
       Scroll(){
         Row({space:10}){
-          ForEach(this.values,(billtype:BillType)=>{
-            this.tl({text:`${billtype.name}`,color:billtype.color})
+          ForEach(this.values,(group:GroupInfo<BillType,Bill[]>)=>{
+            this.tl({text:`${group.type.name}`,color:group.type.color})
           })
         }
         .margin({top:5})

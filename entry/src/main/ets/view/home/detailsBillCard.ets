@@ -1,10 +1,12 @@
 import colorUtil from '../../common/utils/ColorUtil'
+import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
+import GroupInfo from '../../viewmodel/GroupInfo'
 
 
 @Component
 export default struct detailsBillCard {
-  @Consume values:BillType[]
+  @Consume values:GroupInfo<BillType,Bill[]>[]
 
   @State items:any = [1,2,3]
 
@@ -21,21 +23,21 @@ export default struct detailsBillCard {
           .fontColor(Color.White)
       }else{
         List({space:10}){
-          ForEach(this.values,(billtype:BillType)=>{
-            ListItemGroup({header:this.ListHead({title:billtype.name,sumValue:billtype.sumValue,budget:billtype.budget,color:billtype.color})}){
-              ForEach(this.items,(item,index:number)=>{
+          ForEach(this.values,(group:GroupInfo<BillType,Bill[]>)=>{
+            ListItemGroup({header:this.ListHead({title:group.type.name,sumValue:group.type.sumValue,budget:group.type.budget,color:group.type.color})}){
+              ForEach(group.items,(item:Bill,index:number)=>{
                 ListItem(){
                   if (index === this.items.length-1){
                     Row(){
                       Column(){
                         Row(){
-                          Text('原神大礼包')
+                          Text(item.label)
                           Blank()
-                          Text('684.00')
+                          Text(item.amount.toFixed(2))
                         }
                         .width('100%')
                         Row(){
-                          Text('10:48:23')
+                          Text(`${item.date}`)
                             .fontColor('#cfcfcf')
                             .fontSize(12)
                         }
@@ -52,13 +54,13 @@ export default struct detailsBillCard {
                     Row(){
                       Column(){
                         Row(){
-                          Text('原神大礼包')
+                          Text(item.label)
                           Blank()
-                          Text('684.00')
+                          Text(item.amount.toFixed(2))
                         }
                         .width('100%')
                         Row(){
-                          Text('10:48:23')
+                          Text(`${item.date}`)
                             .fontColor('#cfcfcf')
                             .fontSize(12)
                         }

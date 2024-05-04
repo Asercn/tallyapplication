@@ -1,3 +1,5 @@
+import BillService from '../common/services/BillService';
+import BillTypeService from '../common/services/BillTypeService';
 import colorUtil from '../common/utils/ColorUtil';
 import DateUtil from '../common/utils/DateUtil';
 import allBillCard from '../view/home/AllBillCard';
@@ -5,47 +7,13 @@ import homeIndex from '../view/home/homeIndex';
 import IECard from '../view/home/IECard';
 import Bill from '../viewmodel/Bill';
 import BillType from '../viewmodel/BillType';
+import GroupInfo from '../viewmodel/GroupInfo';
 
 @Entry
 @Component
 struct Index {
   @State currentIndex:number = 0
-  @State items:any = [1,2,3]
 
-  @Provide total:number = 1300
-  @Provide sumValue:number = 0
-  @Provide income:number = 0
-  @Provide values:BillType[] = [
-    new BillType('组1',800,1200),
-    new BillType('组2',130,200),
-    new BillType('组3',200,180),
-    new BillType('组4',101,200),
-    new BillType('组5',21,100),
-    new BillType('组6',81,80),
-    new BillType('组7',51,100),
-
-  ]
-
-
-
-  // 获取今日的总消费和总预算
-  getSum(){
-    this.values.forEach(billtype=>{
-      this.sumValue += billtype.sumValue
-      this.total += billtype.budget
-    })
-    console.log('testTag','Index','total',this.total)
-  }
-
-  // 将数据从小到大排序展示
-  initValue(){
-    this.values = this.values.sort((a,b)=>b.sumValue-a.sumValue)
-  }
-  aboutToAppear(){
-    console.log('testTag','Index',DateUtil.getWeek(new Date()))
-    this.initValue()
-    this.getSum()
-  }
 
   build() {
     Tabs({barPosition:BarPosition.End}){
@@ -64,6 +32,8 @@ struct Index {
       }
       .tabBar(this.TabBuilder('账单记录',1,$r('app.media.historicalBill_select'),$r('app.media.historicalBill')))
     }
+    .animationDuration(100)
+    .scrollable(false)
     .onChange((index:number)=>{
       this.currentIndex = index
     })

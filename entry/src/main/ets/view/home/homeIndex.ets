@@ -1,5 +1,11 @@
+import BillService from '../../common/services/BillService'
+import BillTypeService from '../../common/services/BillTypeService'
 import colorUtil from '../../common/utils/ColorUtil'
+import DateUtil from '../../common/utils/DateUtil'
+import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
+import GroupInfo from '../../viewmodel/GroupInfo'
+import addBillTypePanel from './addBillTypePanel'
 import allBillCard from './AllBillCard'
 import detailsBillCard from './detailsBillCard'
 import IECard from './IECard'
@@ -9,22 +15,70 @@ export default struct homeIndex {
   title:string = '首页'
   titleFont:number = 30
 
-  @State isPanelShow:boolean = false
+  @State @Watch('getValues') isPanelShow:boolean = false
 
 
 
 
-  @Consume total:number
-  @Consume sumValue:number
-  @Consume income:number
-  @Consume values:BillType[]
+  @Provide total:number = 1300
+  @Provide sumValue:number = 0
+  @Provide income:number = 0
+  @Provide values:GroupInfo<BillType,Bill>[] = [
+    new GroupInfo(new BillType('组1',800),[]),
+    new GroupInfo(new BillType('组2',130),[]),
+
+  ]
+
+  aboutToAppear(){
+    console.log('testTag','homeIndex',DateUtil.getWeek(new Date()))
+    this.getValues()
+    this.initValue()
+    this.getSum()
+  }
+
+  // 获取今日的总消费和总预算
+  getSum(){
+    this.values.forEach(group=>{
+      this.sumValue += group.type.sumValue
+      this.total += group.type.budget
+    })
+    console.log('testTag','Index','total',this.total)
+  }
+
+
+  // 将数据从小到大排序展示
+  initValue(){
+    this.values = this.values.sort((a,b)=>b.type.sumValue-a.type.sumValue)
+  }
+
+
+  // 获取数据
+  async getValues(){
+    let bills:Bill[] = await BillService.getBill()
+    let billtypes:BillType[] = await BillTypeService.getBillType()
+    this.values = BillService.getBillGroup(bills,billtypes)
+    console.log('testTag','Index','billtypes',JSON.stringify(billtypes))
+    console.log('testTag','Index','bills',JSON.stringify(bills))
+  }
 
   build() {
     Column() {
       // 头部
       this.header({title:this.title})
-      // 主要内容
-      this.main()
+
+      Stack(){
+        // 主要内容
+        this.main()
+        // 消费类型分组
+        Panel(this.isPanelShow){
+          addBillTypePanel({isPanelShow:this.isPanelShow})
+        }
+        .dragBar(false)
+        .type(PanelType.Temporary)
+
+      }
+
+
 
     }
     .width('100%')
@@ -89,14 +143,14 @@ export default struct homeIndex {
       // 固定定位按钮
       Row(){
         Button('新增+')
-          .position({x:'100%',y:'50%'})
-          .translate({x:'-100%'})
           .onClick(()=>{
-
+            this.isPanelShow = true
           })
       }
+      .position({x:'100%',y:'50%'})
+      .translate({x:'-100%'})
       .opacity(.5)
-      .backgroundColor('red')
+      // .backgroundColor('red')
       .zIndex(1000)
 
       Scroll(){
@@ -112,20 +166,22 @@ export default struct homeIndex {
         }
         .align(Alignment.Top)
         .width('100%')
-        // .backgroundColor('green')
+        .backgroundColor('green')
 
 
       }
+      .height('100%')
       .scrollable(ScrollDirection.Vertical)
       .scrollBar(BarState.Off)
-      // .backgroundColor('red')
+      .align(Alignment.Top)
+      .backgroundColor('red')
       .layoutWeight(1)
       .padding(10)
     }
     .layoutWeight(1)
 
   }
-  // 首页页脚
+  // 首页页脚 已经不用了
   @Builder footer(){
     Row(){
       Row({space:20}){
