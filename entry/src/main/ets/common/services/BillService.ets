@@ -33,6 +33,10 @@ class BillService{
     })
     bills.forEach((bill:Bill)=>{
       groups[bill.groupId].items.push(bill)
+      // if (bill.isExpend) {
+      //   groups[bill.groupId].type.sumValue += bill.amount
+      // }
+
     })
     return groups
   }
@@ -49,8 +53,19 @@ class BillService{
     }else{
       return BillModel.listByDate(new Date().getTime())
     }
-
   }
+
+  /**
+   * 返回区间内日期的账单
+   * @param startDate
+   * @param endDate
+   * @returns
+   */
+  listByDateBetween(startDate:Date,endDate:Date){
+    return BillModel.listByDateBetween(startDate.getTime(),endDate.getTime())
+  }
+
+
 
 
   getAllBill(){

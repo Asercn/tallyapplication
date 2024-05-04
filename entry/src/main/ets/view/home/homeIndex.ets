@@ -10,6 +10,7 @@ import allBillCard from './AllBillCard'
 import detailsBillCard from './detailsBillCard'
 import IECard from './IECard'
 
+
 @Component
 export default struct homeIndex {
   title:string = '首页'
@@ -20,25 +21,53 @@ export default struct homeIndex {
 
 
 
-  @Provide total:number = 1300
+  @Provide total:number = 0
   @Provide sumValue:number = 0
   @Provide income:number = 0
   @Provide values:GroupInfo<BillType,Bill>[] = [
-    new GroupInfo(new BillType('组1',800),[]),
-    new GroupInfo(new BillType('组2',130),[]),
+    new GroupInfo(new BillType('组1',800),[
+      new Bill(100,new Date(),true,'吃饭',0),
+      new Bill(100,new Date(),true,'吃饭',0),
+      new Bill(100,new Date(),true,'吃饭',0),
+    ]),
+    new GroupInfo(new BillType('组2',130),[
+      new Bill(10,new Date(),true,'吃饭',0),
+    ]),
+    new GroupInfo(new BillType('组3',130),[
+      new Bill(100,new Date(),true,'吃饭',0),
+      new Bill(100,new Date(),true,'吃饭',0),
+      new Bill(100,new Date(),true,'吃饭',0),
+      new Bill(100,new Date(),false,'吃饭',0),
+    ]),
+    new GroupInfo(new BillType('组4',130),[
+      new Bill(100,new Date(),true,'吃饭',0),
+    ]),
+    new GroupInfo(new BillType('组5'),[
+      new Bill(100,new Date(),true,'吃饭',0),
+      new Bill(100,new Date(),true,'吃饭',0),
+    ]),
 
   ]
 
   aboutToAppear(){
     console.log('testTag','homeIndex',DateUtil.getWeek(new Date()))
-    this.getValues()
-    this.initValue()
-    this.getSum()
+    this.getValues().then(rep=>{
+      this.getSum()
+      this.sortValue()
+    })
   }
 
-  // 获取今日的总消费和总预算
+  // 获取所有的总消费和总预算和收入
   getSum(){
-    this.values.forEach(group=>{
+    this.values.forEach((group:GroupInfo<BillType,Bill>)=>{
+      group.items.forEach((item:Bill)=>{
+        if(item.isExpend){
+          group.type.sumValue += item.amount
+        }else{
+          this.income += item.amount
+          group.type.budget += item.amount
+        }
+      })
       this.sumValue += group.type.sumValue
       this.total += group.type.budget
     })
@@ -47,14 +76,14 @@ export default struct homeIndex {
 
 
   // 将数据从小到大排序展示
-  initValue(){
+  sortValue(){
     this.values = this.values.sort((a,b)=>b.type.sumValue-a.type.sumValue)
   }
 
 
   // 获取数据
   async getValues(){
-    let bills:Bill[] = await BillService.getBill()
+    let bills:Bill[] = await BillService.getAllBill()
     let billtypes:BillType[] = await BillTypeService.getBillType()
     this.values = BillService.getBillGroup(bills,billtypes)
     console.log('testTag','Index','billtypes',JSON.stringify(billtypes))
@@ -162,24 +191,21 @@ export default struct homeIndex {
           // 今日详情消费
           detailsBillCard()
 
-
         }
         .align(Alignment.Top)
         .width('100%')
-        .backgroundColor('green')
+        // .backgroundColor('green')
 
 
       }
-      .height('100%')
       .scrollable(ScrollDirection.Vertical)
       .scrollBar(BarState.Off)
       .align(Alignment.Top)
-      .backgroundColor('red')
-      .layoutWeight(1)
+      // .backgroundColor('red')
       .padding(10)
+      .margin({bottom:50})
+      .layoutWeight(1)
     }
-    .layoutWeight(1)
-
   }
   // 首页页脚 已经不用了
   @Builder footer(){

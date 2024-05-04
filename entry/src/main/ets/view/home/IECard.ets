@@ -1,3 +1,5 @@
+import BillService from '../../common/services/BillService'
+import DateUtil from '../../common/utils/DateUtil'
 import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
 import GroupInfo from '../../viewmodel/GroupInfo'
@@ -7,7 +9,8 @@ export default struct IECard {
   @Consume sumValue:number
   @Consume total:number
   @Consume income:number
-  @Consume values:GroupInfo<BillType,Bill[]>[]
+  @Consume values:GroupInfo<BillType,Bill>[]
+
 
 
   build() {

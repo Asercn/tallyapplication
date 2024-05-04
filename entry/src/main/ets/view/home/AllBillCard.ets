@@ -1,13 +1,75 @@
+import BillService from '../../common/services/BillService'
+import DateUtil from '../../common/utils/DateUtil'
+import Bill from '../../viewmodel/Bill'
 
 @Component
 export default struct allBillCard {
+
+  @State weekValues:Bill[] = []
+  @State weekIncome:number = 0
+  @State weekExpend:number = 0
+  @State monthValues:Bill[] = []
+  @State monthExpend:number = 0
+  @State monthIncome:number = 0
+  @State yearValues:Bill[] = []
+  @State yearIncome:number = 0
+  @State yearExpend:number = 0
+
+
+  week = DateUtil.getWeekStartAndEndTimestamps()
+  month = DateUtil.getMonthStartAndEndTimestamps()
+  year = DateUtil.getYearStartAndEndTimestamps()
+
+  // 获取到所有的周,月,年的数据
+  getValues(){
+    // 获取到所有的bill数据
+    BillService.getAllBill().then(bills=>{
+
+      this.weekValues = bills.map((bill:Bill)=>{
+        if(bill.date.getTime()>this.week.startTimestamp && bill.date.getTime() < this.week.endTimestamp){
+          if (bill.isExpend) {
+            this.weekExpend += bill.amount
+          }else{
+            this.weekIncome += bill.amount
+          }
+          return bill
+        }
+      })
+      this.monthValues = bills.map((bill:Bill)=>{
+        if(bill.date.getTime()>this.month.startTimestamp && bill.date.getTime() < this.month.endTimestamp){
+          if (bill.isExpend) {
+            this.monthExpend += bill.amount
+          }else{
+            this.monthIncome += bill.amount
+          }
+          return bill
+        }
+      })
+      this.yearValues = bills.map((bill:Bill)=>{
+        if(bill.date.getTime()>this.year.startTimestamp && bill.date.getTime() < this.year.endTimestamp){
+          if (bill.isExpend) {
+            this.yearExpend += bill.amount
+          }else{
+            this.yearIncome += bill.amount
+          }
+          return bill
+        }
+      })
+    })
+
+  }
+
+  aboutToAppear(){
+    this.getValues()
+  }
+
   build() {
     // 账单总图
     Column({space:8}){
       // 周项
-      this.DataItem($r('app.media.week'),'本周',`2024年04月29日-2024年5月5日`,200.00,1000)
-      this.DataItem($r('app.media.month'),'本月',`2024年05月02日`,100,3000.00)
-      this.DataItem($r('app.media.year'),'本年',`2024年05月02日`,1111.11,5555)
+      this.DataItem($r('app.media.week'),'本周',`${DateUtil.formatDate(this.week.startTimestamp)}-${DateUtil.formatDate(this.week.endTimestamp)}`,this.weekExpend,this.weekIncome)
+      this.DataItem($r('app.media.month'),'本月',`${new Date(this.month.startTimestamp).getMonth()+1}月`,this.monthExpend,this.weekIncome)
+      this.DataItem($r('app.media.year'),'本年',`${new Date(this.year.startTimestamp).getFullYear()}年`,this.yearExpend,this.yearIncome)
 
     }
     .cardStyle()
