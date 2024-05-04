@@ -1,4 +1,5 @@
 import BillModel from '../../model/BillModel';
+import BillTypeModel from '../../model/BillTypeModel';
 import Bill from '../../viewmodel/Bill';
 import BillType from '../../viewmodel/BillType';
 import GroupInfo from '../../viewmodel/GroupInfo';
@@ -19,6 +20,18 @@ class BillService{
   insert(label:string,amount:number,date:Date,isExpend:boolean,groupId?:number):Promise<number>{
 
     return BillModel.insert({label:label,amount:amount,date:date,isExpend:isExpend,groupId:groupId})
+  }
+
+  /**
+   * 根据分组id删除分组
+   * @param id
+   */
+  deleteBillType(id:number){
+    // 先删除账单或者将分组id变成空
+    BillModel.deleteByGroupId(id).then(rep=>{
+      BillTypeModel.deleteById(id)
+    })
+
   }
 
   /**

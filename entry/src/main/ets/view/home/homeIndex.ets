@@ -5,6 +5,7 @@ import DateUtil from '../../common/utils/DateUtil'
 import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
 import GroupInfo from '../../viewmodel/GroupInfo'
+import addBillPanel from './addBillPanel'
 import addBillTypePanel from './addBillTypePanel'
 import allBillCard from './AllBillCard'
 import detailsBillCard from './detailsBillCard'
@@ -17,7 +18,8 @@ export default struct homeIndex {
   titleFont:number = 30
 
   @State @Watch('getValues') isPanelShow:boolean = false
-
+  @Provide @Watch('getValues') billPanel:boolean = false
+  @State groupId:number = 0
 
 
 
@@ -105,7 +107,14 @@ export default struct homeIndex {
         .dragBar(false)
         .type(PanelType.Temporary)
 
+        // 2024年5月5日02:29:34
+        Panel(this.billPanel){
+          addBillPanel({groupId:this.groupId})
+        }
+        .dragBar(false)
+        .type(PanelType.Temporary)
       }
+      // .backgroundColor('red')
 
 
 
@@ -171,7 +180,17 @@ export default struct homeIndex {
     Stack(){
       // 固定定位按钮
       Row(){
-        Button('新增+')
+        Button(){
+          Text('+')
+            .layoutWeight(1)
+            .fontSize(30)
+            .fontColor(Color.White)
+            .fontWeight(FontWeight.Bold)
+            .textAlign(TextAlign.Center)
+        }
+          .type(ButtonType.Circle)
+          .width(70)
+          .backgroundColor($r('app.color.contrast_primary_color'))
           .onClick(()=>{
             this.isPanelShow = true
           })
@@ -189,7 +208,7 @@ export default struct homeIndex {
           // 账单总图
           allBillCard()
           // 今日详情消费
-          detailsBillCard()
+          detailsBillCard({groupId:this.groupId})
 
         }
         .align(Alignment.Top)
@@ -203,7 +222,7 @@ export default struct homeIndex {
       .align(Alignment.Top)
       // .backgroundColor('red')
       .padding(10)
-      .margin({bottom:50})
+      .margin({bottom:0})
       .layoutWeight(1)
     }
   }

@@ -1,3 +1,4 @@
+import BillService from '../../common/services/BillService'
 import colorUtil from '../../common/utils/ColorUtil'
 import DateUtil from '../../common/utils/DateUtil'
 import DbUtil from '../../common/utils/DbUtil'
@@ -8,7 +9,10 @@ import GroupInfo from '../../viewmodel/GroupInfo'
 
 @Component
 export default struct detailsBillCard {
+  @Link groupId:number
+
   @Consume values:GroupInfo<BillType,Bill>[]
+  @Consume billPanel:boolean
 
 
   build() {
@@ -83,6 +87,14 @@ export default struct detailsBillCard {
                 }
               }
             }
+            .swipeAction({end:this.deleteButton({id:group.type.id})})
+            .onClick(()=>{
+              // 1.打开面板
+              this.billPanel = true
+              // 2.传回groupId
+              this.groupId = group.type.id
+              // 2.调用方法
+            })
           })
         }
       }
@@ -94,6 +106,26 @@ export default struct detailsBillCard {
     .padding(10)
   }
 
+
+  // 删除组选项
+  @Builder deleteButton($$:{id:number}){
+    Row(){
+      Button(){
+        Image($r('app.media.delete'))
+          .width(40)
+      }
+      .backgroundColor(Color.Transparent)
+      .onClick((event: ClickEvent) => {
+        // 删除该分组
+        BillService.deleteBillType($$.id)
+      })
+
+
+    }
+    .alignItems(VerticalAlign.Top)
+    .height('100%')
+    // .backgroundColor('red')
+  }
 
   // 列表分组头
   @Builder ListHead($$:{title:string,sumValue:number,budget:number,color:string}){

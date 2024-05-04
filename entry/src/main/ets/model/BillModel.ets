@@ -25,6 +25,7 @@ const COLUMNS: ColumnInfo[] = [
   { name: 'amount', columnName: 'amount', type: ColumnType.DOUBLE },
   { name: 'date', columnName: 'date', type: ColumnType.LONG },
   { name: 'isExpend', columnName: 'is_expends', type: ColumnType.STRING },
+  { name: 'groupId', columnName: 'group_id', type: ColumnType.LONG },
 ]
 
 class BillModel{
@@ -50,6 +51,17 @@ class BillModel{
   deleteById(id:number):Promise<number>{
     let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
     predicates.equalTo('id',id)
+    return DbUtil.delete(predicates)
+  }
+
+  /**
+   * 删除分组中的账单数据
+   * @param id
+   * @returns
+   */
+  deleteByGroupId(groupId:number):Promise<number>{
+    let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
+    predicates.equalTo('group_id',groupId)
     return DbUtil.delete(predicates)
   }
 
