@@ -20,11 +20,20 @@ class BillService{
     return BillModel.insert({label:label,amount:amount,date:date,isExpend:isExpend,groupId:groupId})
   }
 
-  getBillGroup(bills:Bill[],billtypes:BillType[]):GroupInfo<BillType,Bill>{
-    let group = billtypes.map((billtype:BillType)=>{
+  /**
+   * 将分组和账单变成一个数据
+   * @param bills 账单
+   * @param billtypes 用户定义的账单分组
+   * @returns
+   */
+  getBillGroup(bills:Bill[],billtypes:BillType[]):GroupInfo<BillType,Bill>[]{
+    let groups:GroupInfo<BillType,Bill>[] = billtypes.map((billtype:BillType)=>{
       return new GroupInfo(billtype,[])
     })
-    return
+    bills.forEach((bill:Bill)=>{
+      groups[bill.groupId].items.push(bill)
+    })
+    return groups
   }
 
 

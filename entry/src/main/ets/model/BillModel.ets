@@ -53,6 +53,13 @@ class BillModel{
     return DbUtil.delete(predicates)
   }
 
+  update(bill:Bill):Promise<number>{
+    let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
+    // 根据id更新
+    predicates.equalTo('id',bill.id)
+    return DbUtil.update(predicates,bill,COLUMNS)
+  }
+
   /**
    * 根据日期获取账单数据
    * @param date
@@ -64,6 +71,18 @@ class BillModel{
     predicates.equalTo('date',date)
     return DbUtil.queryForList(predicates,COLUMNS);
 
+  }
+
+  /**
+   * 查询范围内日期
+   * @param minDate 开始日期
+   * @param maxDate 结束日期
+   * @returns
+   */
+  listByDateBetween(minDate:number,maxDate:number):Promise<Bill[]>{
+    let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
+    predicates.between('date',minDate,maxDate)
+    return DbUtil.queryForList(predicates,COLUMNS)
   }
 }
 

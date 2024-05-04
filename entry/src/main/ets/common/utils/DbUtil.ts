@@ -72,6 +72,30 @@ class DbUtil {
     })
   }
 
+  /**
+   * 修改
+   * @param predicates 修改谓词
+   * @param obj 数据模型名
+   * @param columns 表字段名
+   * @returns
+   */
+  update(predicates: relationalStore.RdbPredicates, obj: any, columns: ColumnInfo[]): Promise<number>{
+    return new Promise((resolve, reject) => {
+      // 1.构建新增数据
+      let value = this.buildValueBucket(obj, columns)
+
+      this.rdbStore.update(value,predicates ,(err, id) => {
+        if (err) {
+          Logger.error('修改失败！', JSON.stringify(err))
+          reject(err)
+        } else {
+          Logger.debug('修改成功！修改id:', id.toString())
+          resolve(id)
+        }
+      })
+    })
+  }
+
   queryForList<T>(predicates: relationalStore.RdbPredicates, columns: ColumnInfo[]): Promise<T[]> {
     return new Promise((resolve, reject) => {
       this.rdbStore.query(predicates, columns.map(info => info.columnName), (err, result) => {
