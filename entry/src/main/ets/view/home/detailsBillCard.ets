@@ -5,6 +5,7 @@ import DbUtil from '../../common/utils/DbUtil'
 import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
 import GroupInfo from '../../viewmodel/GroupInfo'
+import router from '@ohos.router'
 
 
 @Component
@@ -12,7 +13,8 @@ export default struct detailsBillCard {
   @Link groupId:number
 
   @Consume values:GroupInfo<BillType,Bill>[]
-  @Consume billPanel:boolean
+
+  // @Consume billPanel:boolean
 
 
   build() {
@@ -46,7 +48,7 @@ export default struct detailsBillCard {
                             }
                             .width('100%')
                             Row(){
-                              Text(`${DateUtil.formatDateMore(item.date.getTime())}`)
+                              Text(`${DateUtil.formatDateMore(item.date)}`)
                                 .fontColor('#cfcfcf')
                                 .fontSize(12)
                             }
@@ -70,7 +72,7 @@ export default struct detailsBillCard {
                             }
                             .width('100%')
                             Row(){
-                              Text(`${DateUtil.formatDateMore(item.date.getTime())}`)
+                              Text(`${DateUtil.formatDateMore(item.date)}`)
                                 .fontColor('#cfcfcf')
                                 .fontSize(12)
                             }
@@ -89,11 +91,16 @@ export default struct detailsBillCard {
             }
             .swipeAction({end:this.deleteButton({id:group.type.id})})
             .onClick(()=>{
-              // 1.打开面板
-              this.billPanel = true
-              // 2.传回groupId
+              // 1.传回groupId
               this.groupId = group.type.id
-              // 2.调用方法
+              console.log('testTag','detailsBillCard','groupId',this.groupId)
+              // 2.打开新增账单界面
+              router.pushUrl({
+                url:"pages/home/addBillPanel",
+                params:{
+                  groupId:this.groupId
+                }
+              })
             })
           })
         }

@@ -19,7 +19,8 @@ class BillService{
    */
   insert(label:string,amount:number,date:Date,isExpend:boolean,groupId?:number):Promise<number>{
 
-    return BillModel.insert({label:label,amount:amount,date:date,isExpend:isExpend,groupId:groupId})
+
+    return BillModel.insert({label:label,amount:amount,date:date.getTime(),isExpend:isExpend.toString(),groupId:groupId})
   }
 
   /**
@@ -45,10 +46,13 @@ class BillService{
       return new GroupInfo(billtype,[])
     })
     bills.forEach((bill:Bill)=>{
-      groups[bill.groupId].items.push(bill)
-      // if (bill.isExpend) {
-      //   groups[bill.groupId].type.sumValue += bill.amount
-      // }
+      groups.forEach((group:GroupInfo<BillType,Bill>)=>{
+        if (bill.groupId == group.type.id) {
+          group.items.push(bill)
+        }
+      })
+      // groups[bill.groupId].items.push(bill)
+
 
     })
     return groups

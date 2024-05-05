@@ -21,7 +21,7 @@ export default class Bill{
   /**
    * 账单日期
    */
-  date:Date
+  date:number
   /**
    * 收入还是支出类型
    */
@@ -38,7 +38,7 @@ export default class Bill{
     this.groupId = groupId
     this.label = label
     this.amount = amount
-    this.date = date
+    this.date = date.getTime()
     this.isExpend = isExpend
   }
 

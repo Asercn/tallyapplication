@@ -15,11 +15,12 @@ export default struct addBillTypePanel {
         .onChange(value=>this.billTypeName=value)
       TextInput({text:`${this.budget}`,placeholder:'分组预算'})
         .type(InputType.Number)
-        .onChange(value=>{
-          if (this.budget <= 0) {
-            this.budget = 0
+        .onChange((text)=>{
+          let value = parseFloat(text)
+          if (isNaN(value)) {
+            value = 0
           }
-          this.budget = parseFloat(value)
+          this.budget = value
           console.log('testTag','addBillTypePanel','budget',this.budget)
         })
 

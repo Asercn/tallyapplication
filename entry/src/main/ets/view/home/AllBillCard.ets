@@ -26,7 +26,7 @@ export default struct allBillCard {
     BillService.getAllBill().then(bills=>{
 
       this.weekValues = bills.map((bill:Bill)=>{
-        if(bill.date.getTime()>this.week.startTimestamp && bill.date.getTime() < this.week.endTimestamp){
+        if(bill.date>this.week.startTimestamp && bill.date < this.week.endTimestamp){
           if (bill.isExpend) {
             this.weekExpend += bill.amount
           }else{
@@ -36,7 +36,7 @@ export default struct allBillCard {
         }
       })
       this.monthValues = bills.map((bill:Bill)=>{
-        if(bill.date.getTime()>this.month.startTimestamp && bill.date.getTime() < this.month.endTimestamp){
+        if(bill.date>this.month.startTimestamp && bill.date < this.month.endTimestamp){
           if (bill.isExpend) {
             this.monthExpend += bill.amount
           }else{
@@ -46,7 +46,7 @@ export default struct allBillCard {
         }
       })
       this.yearValues = bills.map((bill:Bill)=>{
-        if(bill.date.getTime()>this.year.startTimestamp && bill.date.getTime() < this.year.endTimestamp){
+        if(bill.date>this.year.startTimestamp && bill.date < this.year.endTimestamp){
           if (bill.isExpend) {
             this.yearExpend += bill.amount
           }else{

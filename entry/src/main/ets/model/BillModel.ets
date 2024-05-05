@@ -24,7 +24,7 @@ const COLUMNS: ColumnInfo[] = [
   { name: 'label', columnName: 'label', type: ColumnType.STRING },
   { name: 'amount', columnName: 'amount', type: ColumnType.DOUBLE },
   { name: 'date', columnName: 'date', type: ColumnType.LONG },
-  { name: 'isExpend', columnName: 'is_expends', type: ColumnType.STRING },
+  { name: 'isExpend', columnName: 'is_expend', type: ColumnType.STRING },
   { name: 'groupId', columnName: 'group_id', type: ColumnType.LONG },
 ]
 
@@ -38,7 +38,7 @@ class BillModel{
    * @param bill
    * @returns
    */
-  insert(bill:Bill):Promise<number>{
+  insert(bill):Promise<number>{
     console.log('testTag','BillModel','insert()',JSON.stringify(bill));
     return DbUtil.insert(TABLE_NAME,bill,COLUMNS)
   }
@@ -104,7 +104,14 @@ class BillModel{
    */
   list():Promise<Bill[]>{
     let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
-    return DbUtil.queryForList<Bill>(predicates,COLUMNS)
+    return new Promise<Bill[]>((resolve,reject)=>{
+      DbUtil.queryForList<Bill>(predicates,COLUMNS).then(bills=>{
+        bills.forEach(bill=>{
+          bill.isExpend = JSON.parse(bill.isExpend.toString())
+        })
+        resolve(bills)
+      })
+    })
   }
 }
 

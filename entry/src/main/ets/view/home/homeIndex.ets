@@ -5,51 +5,25 @@ import DateUtil from '../../common/utils/DateUtil'
 import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
 import GroupInfo from '../../viewmodel/GroupInfo'
-import addBillPanel from './addBillPanel'
+import addBillPanel from '../../pages/home/addBillPanel'
 import addBillTypePanel from './addBillTypePanel'
 import allBillCard from './AllBillCard'
 import detailsBillCard from './detailsBillCard'
 import IECard from './IECard'
 
-
 @Component
 export default struct homeIndex {
-  title:string = '首页'
-  titleFont:number = 30
+  @Consume @Watch('aboutToAppear') Refresh:boolean
 
-  @State @Watch('getValues') isPanelShow:boolean = false
-  @Provide @Watch('getValues') billPanel:boolean = false
-  @State groupId:number = 0
+  @State @Watch('aboutToAppear') isPanelShow:boolean = false
 
+  @Provide groupId:number = 0
 
 
   @Provide total:number = 0
   @Provide sumValue:number = 0
   @Provide income:number = 0
-  @Provide values:GroupInfo<BillType,Bill>[] = [
-    new GroupInfo(new BillType('组1',800),[
-      new Bill(100,new Date(),true,'吃饭',0),
-      new Bill(100,new Date(),true,'吃饭',0),
-      new Bill(100,new Date(),true,'吃饭',0),
-    ]),
-    new GroupInfo(new BillType('组2',130),[
-      new Bill(10,new Date(),true,'吃饭',0),
-    ]),
-    new GroupInfo(new BillType('组3',130),[
-      new Bill(100,new Date(),true,'吃饭',0),
-      new Bill(100,new Date(),true,'吃饭',0),
-      new Bill(100,new Date(),true,'吃饭',0),
-      new Bill(100,new Date(),false,'吃饭',0),
-    ]),
-    new GroupInfo(new BillType('组4',130),[
-      new Bill(100,new Date(),true,'吃饭',0),
-    ]),
-    new GroupInfo(new BillType('组5'),[
-      new Bill(100,new Date(),true,'吃饭',0),
-      new Bill(100,new Date(),true,'吃饭',0),
-    ]),
-
-  ]
+  @Provide values:GroupInfo<BillType,Bill>[] = []
 
   aboutToAppear(){
     console.log('testTag','homeIndex',DateUtil.getWeek(new Date()))
@@ -58,6 +32,8 @@ export default struct homeIndex {
       this.sortValue()
     })
   }
+
+
 
   // 获取所有的总消费和总预算和收入
   getSum(){
@@ -89,31 +65,22 @@ export default struct homeIndex {
     let billtypes:BillType[] = await BillTypeService.getBillType()
     this.values = BillService.getBillGroup(bills,billtypes)
     console.log('testTag','Index','billtypes',JSON.stringify(billtypes))
+    // console.log('testTag','Index','billPanel',JSON.stringify(this.billPanel))
+    console.log('testTag','Index','groupId',JSON.stringify(this.groupId))
     console.log('testTag','Index','bills',JSON.stringify(bills))
   }
 
   build() {
     Column() {
-      // 头部
-      this.header({title:this.title})
-
-      Stack(){
-        // 主要内容
-        this.main()
-        // 消费类型分组
-        Panel(this.isPanelShow){
-          addBillTypePanel({isPanelShow:this.isPanelShow})
-        }
-        .dragBar(false)
-        .type(PanelType.Temporary)
-
-        // 2024年5月5日02:29:34
-        Panel(this.billPanel){
-          addBillPanel({groupId:this.groupId})
-        }
-        .dragBar(false)
-        .type(PanelType.Temporary)
+      // 主要内容
+      this.main()
+      // 消费类型分组
+      Panel(this.isPanelShow){
+        addBillTypePanel({isPanelShow:this.isPanelShow})
       }
+      .position({})
+      .dragBar(false)
+      .type(PanelType.Temporary)
       // .backgroundColor('red')
 
 
@@ -124,56 +91,7 @@ export default struct homeIndex {
   }
 
 
-  // 首页头部
-  @Builder header($$:{title:string}){
-    Row(){
-      Row().layoutWeight(1)
-      Stack(){
-        Text($$.title)
-          .offset({y:2})
-          .fontColor(Color.Gray)
-          .fontSize(this.titleFont)
-        Text($$.title)
-          .fontColor(Color.White)
-          .fontSize(this.titleFont)
-      }
-      .layoutWeight(1)
 
-      // 设置按钮
-      Row(){
-        Button(){
-          Stack(){
-            Image($r('app.media.setting_primary')).width(30).offset({y:3})
-              .renderMode(ImageRenderMode.Template)
-              .colorFilter([
-                .5,0,0,0,0,
-                0,.5,0,0,0,
-                0,0,.5,0,0,
-                1,1,1,1,0
-              ])
-              .blur(5)
-            // .opacity(.5)
-
-            Image($r('app.media.setting_primary')).width(30)
-
-          }
-        }
-        .backgroundColor(Color.Transparent)
-        .onClick((event: ClickEvent) => {
-          // 打开设计面板或者页面
-
-        })
-      }
-      .justifyContent(FlexAlign.End)
-      .layoutWeight(1)
-
-    }
-    .padding(10)
-    .shadow({radius:5,offsetY:2})
-    .width('100%')
-    .height(50)
-    .backgroundColor($r('app.color.primary_color'))
-  }
 
   // 首页中间部分
   @Builder main(){
@@ -219,86 +137,45 @@ export default struct homeIndex {
       }
       .scrollable(ScrollDirection.Vertical)
       .scrollBar(BarState.Off)
-      .align(Alignment.Top)
-      // .backgroundColor('red')
+      .backgroundColor('red')
       .padding(10)
-      .margin({bottom:0})
+      .margin({bottom:50})
       .layoutWeight(1)
     }
   }
-  // 首页页脚 已经不用了
-  @Builder footer(){
-    Row(){
-      Row({space:20}){
-        Button('历史账单')
-          .buttonStyle()
-          .onClick((event: ClickEvent) => {
-
-          })
-        Button('记一账')
-          .buttonStyle()
-          .onClick((event: ClickEvent) => {
-
-          })
-        Button('更多')
-          .buttonStyle()
-          .onClick((event: ClickEvent) => {
-
-          })
-
-      }
-      .justifyContent(FlexAlign.SpaceEvenly)
-      .backgroundColor($r('app.color.primary_color'))
-      .width('100%')
-      .height(80)
-      .shadow({radius:20})
-    }
-    .width('100%')
-    .height(100)
-    .backgroundColor($r('app.color.dark_primary_color'))
-    .alignItems(VerticalAlign.Bottom)
-    .shadow({radius:15})
-  }
-
-  // 列表分组头
-  @Builder ListHead($$:{title:string,sumValue:number,budget:number,color:string}){
-    Row(){
-      Stack(){
-        Row()
-          .width('100%')
-          .height('100%')
-          .backgroundColor(Color.White)
-          .borderRadius(20)
-          .shadow({radius:2,offsetY:10,color:'#868686'})
-
-        Row(){
-          Text($$.title)
-            .fontColor(colorUtil.getComplementaryColor($$.color))
-            .fontSize(20)
-          if ($$.sumValue>$$.budget){
-            Text('超出预算')
-              .fontColor('#FFD700')
-              .fontWeight(FontWeight.Bold)
-          }else{
-            Blank()
-            Text(`${$$.sumValue}/${$$.budget}元`)
-              .fontSize(10)
-              .fontColor('#cccccc')
-              .fontWeight(FontWeight.Bolder)
-          }
-
-        }
-        .width(`${$$.sumValue*100/$$.budget}%`)
-        .height('100%')
-        .padding(10)
-        .borderRadius(20)
-        .backgroundColor($$.color)
-
-      }
-      .alignContent(Alignment.Start)
-      .height(50)
-    }
-  }
+  // // 首页页脚 已经不用了
+  // @Builder footer(){
+  //   Row(){
+  //     Row({space:20}){
+  //       Button('历史账单')
+  //         .buttonStyle()
+  //         .onClick((event: ClickEvent) => {
+  //
+  //         })
+  //       Button('记一账')
+  //         .buttonStyle()
+  //         .onClick((event: ClickEvent) => {
+  //
+  //         })
+  //       Button('更多')
+  //         .buttonStyle()
+  //         .onClick((event: ClickEvent) => {
+  //
+  //         })
+  //
+  //     }
+  //     .justifyContent(FlexAlign.SpaceEvenly)
+  //     .backgroundColor($r('app.color.primary_color'))
+  //     .width('100%')
+  //     .height(80)
+  //     .shadow({radius:20})
+  //   }
+  //   .width('100%')
+  //   .height(100)
+  //   .backgroundColor($r('app.color.dark_primary_color'))
+  //   .alignItems(VerticalAlign.Bottom)
+  //   .shadow({radius:15})
+  // }
 
 
 }

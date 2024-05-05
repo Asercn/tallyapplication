@@ -1,24 +1,24 @@
-import BillService from '../common/services/BillService';
-import BillTypeService from '../common/services/BillTypeService';
-import colorUtil from '../common/utils/ColorUtil';
-import DateUtil from '../common/utils/DateUtil';
-import allBillCard from '../view/home/AllBillCard';
 import homeIndex from '../view/home/homeIndex';
-import IECard from '../view/home/IECard';
-import Bill from '../viewmodel/Bill';
-import BillType from '../viewmodel/BillType';
-import GroupInfo from '../viewmodel/GroupInfo';
 
 @Entry
 @Component
 struct Index {
   @State currentIndex:number = 0
-
-
+  title:string = '首页'
+  titleFont:number = 30
+  @Provide Refresh:boolean = false
+  onPageShow(){
+    this.Refresh = true
+  }
+  onPageHide(){
+    this.Refresh = false
+  }
   build() {
     Tabs({barPosition:BarPosition.End}){
       TabContent(){
         Column() {
+          // 头部
+          this.header({title:this.title})
           // 首页
           homeIndex()
         }
@@ -78,6 +78,58 @@ struct Index {
     .height('100%')
     .width('100%')
     .backgroundColor($r('app.color.dark_primary_color'))
+  }
+
+
+  // 首页头部
+  @Builder header($$:{title:string}){
+    Row(){
+      Row().layoutWeight(1)
+      Stack(){
+        Text($$.title)
+          .offset({y:2})
+          .fontColor(Color.Gray)
+          .fontSize(this.titleFont)
+        Text($$.title)
+          .fontColor(Color.White)
+          .fontSize(this.titleFont)
+      }
+      .layoutWeight(1)
+
+      // 设置按钮
+      Row(){
+        Button(){
+          Stack(){
+            Image($r('app.media.setting_primary')).width(30).offset({y:3})
+              .renderMode(ImageRenderMode.Template)
+              .colorFilter([
+                .5,0,0,0,0,
+                0,.5,0,0,0,
+                0,0,.5,0,0,
+                1,1,1,1,0
+              ])
+              .blur(5)
+            // .opacity(.5)
+
+            Image($r('app.media.setting_primary')).width(30)
+
+          }
+        }
+        .backgroundColor(Color.Transparent)
+        .onClick((event: ClickEvent) => {
+          // 打开设计面板或者页面
+
+        })
+      }
+      .justifyContent(FlexAlign.End)
+      .layoutWeight(1)
+
+    }
+    .padding(10)
+    .shadow({radius:5,offsetY:2})
+    .width('100%')
+    .height(50)
+    .backgroundColor($r('app.color.primary_color'))
   }
 
 }
