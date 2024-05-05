@@ -81,11 +81,11 @@ class BillTypeService{
    * 根据分组id删除分组
    * @param id
    */
-  deleteBillType(id:number){
+  async deleteBillType(id:number){
     // 先删除账单或者将分组id变成空
     console.log('testTag','BillTypeService','进入到删除分组方法')
-    BillModel.deleteByGroupId(id)
-    BillTypeModel.deleteById(id)
+    await BillModel.deleteByGroupId(id)
+    await BillTypeModel.deleteById(id)
 
   }
 

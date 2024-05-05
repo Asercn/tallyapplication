@@ -25,6 +25,9 @@ export default struct homeIndex {
   @Provide income:number = 0
   @Provide values:GroupInfo<BillType,Bill>[] = []
 
+  refresh(){
+    this.Refresh = !this.Refresh
+  }
 
   aboutToAppear(){
     console.log('testTag','homeIndex',DateUtil.getWeek(new Date()))
@@ -132,7 +135,7 @@ export default struct homeIndex {
           // 账单总图
           allBillCard()
           // 今日详情消费
-          detailsBillCard({groupId:this.groupId,removeValues:this.removeValues.bind(this),refresh:this.aboutToAppear.bind(this)})
+          detailsBillCard({groupId:this.groupId,removeValues:this.removeValues.bind(this),refresh:this.refresh.bind(this)})
 
         }
         .align(Alignment.Top)

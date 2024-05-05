@@ -110,7 +110,8 @@ class BillModel{
         bills.forEach(bill=>{
           bill.isExpend = JSON.parse(bill.isExpend.toString())
         })
-        resolve(bills)
+        console.log('testTag','BillModel','bills',JSON.stringify(bills))
+        resolve(JSON.parse(JSON.stringify(bills)))
       })
     })
   }

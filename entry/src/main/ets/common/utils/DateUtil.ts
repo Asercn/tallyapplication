@@ -56,7 +56,7 @@ class DateUtil{
   // 获取本周的第一天和最后一天的时间戳
   getWeekStartAndEndTimestamps() {
   let today = new Date();
-  let startOfCurrentWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
+  let startOfCurrentWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
   let endOfCurrentWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (7 - today.getDay()));
   return {
     startTimestamp: startOfCurrentWeek.getTime(),
