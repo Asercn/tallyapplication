@@ -68,6 +68,7 @@ class BillModel{
   update(bill:Bill):Promise<number>{
     let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
     // 根据id更新
+
     predicates.equalTo('id',bill.id)
     return DbUtil.update(predicates,bill,COLUMNS)
   }
@@ -112,6 +113,13 @@ class BillModel{
         resolve(bills)
       })
     })
+  }
+
+  async getBillByGroupId(groupId:number): Promise<Bill[]>{
+    let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
+    predicates.equalTo('group_id',groupId)
+    return await DbUtil.queryForList(predicates,COLUMNS)
+
   }
 }
 

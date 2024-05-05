@@ -4,6 +4,7 @@ import Bill from '../../viewmodel/Bill'
 
 @Component
 export default struct allBillCard {
+  @Consume @Watch('aboutToAppear') Refresh:boolean
 
   @State weekValues:Bill[] = []
   @State weekIncome:number = 0
@@ -22,6 +23,7 @@ export default struct allBillCard {
 
   // 获取到所有的周,月,年的数据
   getValues(){
+    console.log('testTag','AllBillCard','进入到此方法getValues')
     // 获取到所有的bill数据
     BillService.getAllBill().then(bills=>{
 

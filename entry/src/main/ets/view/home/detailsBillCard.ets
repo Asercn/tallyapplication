@@ -6,6 +6,7 @@ import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
 import GroupInfo from '../../viewmodel/GroupInfo'
 import router from '@ohos.router'
+import BillTypeService from '../../common/services/BillTypeService'
 
 
 @Component
@@ -14,8 +15,8 @@ export default struct detailsBillCard {
 
   @Consume values:GroupInfo<BillType,Bill>[]
 
-  // @Consume billPanel:boolean
-
+  refresh:()=>void
+  removeValues:(id:number)=>void
 
   build() {
     // 今日详情消费
@@ -122,9 +123,13 @@ export default struct detailsBillCard {
           .width(40)
       }
       .backgroundColor(Color.Transparent)
-      .onClick((event: ClickEvent) => {
-        // 删除该分组
-        BillService.deleteBillType($$.id)
+      .onClick(async (event: ClickEvent) => {
+        // 删除表中的数据
+        await this.removeValues($$.id)
+        // 删除数据库中的分组数据
+        await BillTypeService.deleteBillType($$.id)
+        // 刷新页面
+        await this.refresh()
       })
 
 

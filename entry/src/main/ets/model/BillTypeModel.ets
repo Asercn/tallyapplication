@@ -42,6 +42,14 @@ class BillTypeModel {
     console.log('testTag','BillTypeModel','insert()',JSON.stringify(billtype));
     return DbUtil.insert(TABLE_NAME,billtype,COLUMNS)
   }
+  /**
+   * 修改BillType
+   */
+  update(billtype:BillType){
+    let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
+    predicates.equalTo('id',billtype.id)
+    return DbUtil.update(predicates,billtype,COLUMNS)
+  }
 
   // 根据id删除
   deleteById(id:number):Promise<number>{
@@ -54,6 +62,14 @@ class BillTypeModel {
     let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
     return DbUtil.queryForList<BillType>(predicates,COLUMNS)
   }
+
+  getBillTypeById(id:number):Promise<BillType[]>{
+    let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
+    predicates.equalTo('id',id)
+    return DbUtil.queryForList(predicates,COLUMNS)
+  }
+
+
 }
 
 

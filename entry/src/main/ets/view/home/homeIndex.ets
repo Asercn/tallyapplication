@@ -25,6 +25,7 @@ export default struct homeIndex {
   @Provide income:number = 0
   @Provide values:GroupInfo<BillType,Bill>[] = []
 
+
   aboutToAppear(){
     console.log('testTag','homeIndex',DateUtil.getWeek(new Date()))
     this.getValues().then(rep=>{
@@ -33,22 +34,27 @@ export default struct homeIndex {
     })
   }
 
+  async removeValues(id:number){
+    let l = this.values.length
+    let index:number[] = []
+    // 找到当中类型的id等于此id
+    for(let i = 0; i < l;i++){
+      if (this.values[i].type.id == id) {
+        index.push(i)
+      }
+    }
+    await index.forEach(i=>{
+      this.values.splice(i,1)
+    })
 
+
+  }
 
   // 获取所有的总消费和总预算和收入
-  getSum(){
-    this.values.forEach((group:GroupInfo<BillType,Bill>)=>{
-      group.items.forEach((item:Bill)=>{
-        if(item.isExpend){
-          group.type.sumValue += item.amount
-        }else{
-          this.income += item.amount
-          group.type.budget += item.amount
-        }
-      })
-      this.sumValue += group.type.sumValue
-      this.total += group.type.budget
-    })
+  async getSum(){
+    this.sumValue = await BillTypeService.getSumValue()
+    this.total = await BillTypeService.getBudget()
+    this.income = await BillService.getIncome()
     console.log('testTag','Index','total',this.total)
   }
 
@@ -126,7 +132,7 @@ export default struct homeIndex {
           // 账单总图
           allBillCard()
           // 今日详情消费
-          detailsBillCard({groupId:this.groupId})
+          detailsBillCard({groupId:this.groupId,removeValues:this.removeValues.bind(this),refresh:this.aboutToAppear.bind(this)})
 
         }
         .align(Alignment.Top)
@@ -137,7 +143,7 @@ export default struct homeIndex {
       }
       .scrollable(ScrollDirection.Vertical)
       .scrollBar(BarState.Off)
-      .backgroundColor('red')
+      // .backgroundColor('red')
       .padding(10)
       .margin({bottom:50})
       .layoutWeight(1)

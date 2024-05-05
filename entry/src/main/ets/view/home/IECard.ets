@@ -11,6 +11,11 @@ export default struct IECard {
   @Consume income:number
   @Consume values:GroupInfo<BillType,Bill>[]
 
+  @State thisTotal:number = 0
+
+  aboutToAppear(){
+    console.log('testTag','total初始值为:',this.total)
+  }
 
 
   build() {
@@ -18,7 +23,7 @@ export default struct IECard {
     Column(){
       // 卡片标题
       Row(){
-        Text('今日收支')
+        Text('分组收支')
           .fontColor($r('app.color.primary_color'))
       }
       .width('100%')
@@ -51,12 +56,22 @@ export default struct IECard {
 
       // 消费条形图
       Row(){
-        Progress({value:this.sumValue,total:this.total})
-          .color($r('app.color.primary_color'))
-          .style({
-            strokeWidth:8
-          })
-          .width('100%')
+        if (this.total == 0){
+          Progress({value:this.sumValue,total:1})
+            .color($r('app.color.primary_color'))
+            .style({
+              strokeWidth:8
+            })
+            .width('100%')
+        }else{
+          Progress({value:this.sumValue,total:this.total})
+            .color($r('app.color.primary_color'))
+            .style({
+              strokeWidth:8
+            })
+            .width('100%')
+        }
+
 
       }
       .width('100%')
@@ -65,14 +80,26 @@ export default struct IECard {
       Scroll(){
         Row(){
           ForEach(this.values,(group:GroupInfo<BillType,Bill[]>)=>{
-            Progress({value:group.type.sumValue,total:group.type.budget})
-              .width(20)
-              .height(80)
-              .color(group.type.color)
-              .rotate({angle:180})
-              .style({
-                strokeWidth:10
-              })
+            if (this.total == 0) {
+              Progress({value:group.type.sumValue,total:1})
+                .width(20)
+                .height(80)
+                .color(group.type.color)
+                .rotate({angle:180})
+                .style({
+                  strokeWidth:10
+                })
+            }else{
+              Progress({value:group.type.sumValue,total:group.type.budget})
+                .width(20)
+                .height(80)
+                .color(group.type.color)
+                .rotate({angle:180})
+                .style({
+                  strokeWidth:10
+                })
+            }
+
           })
         }
         .width('100%')
@@ -98,7 +125,7 @@ export default struct IECard {
 
       // 收入字样
       Row(){
-        Text(`今日收入 ${this.income} 元`)
+        Text(`收入 ${this.income} 元`)
           .fontSize(14)
           .fontColor($r('app.color.contrast_primary_color'))
       }

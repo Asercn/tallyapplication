@@ -5,6 +5,7 @@ import BillType from '../../viewmodel/BillType';
 import GroupInfo from '../../viewmodel/GroupInfo';
 import DateUtil from '../utils/DateUtil';
 import DbUtil from '../utils/DbUtil';
+import BillTypeService from './BillTypeService';
 
 class BillService{
 
@@ -17,23 +18,24 @@ class BillService{
    * @param groupId 分组id
    * @returns
    */
-  insert(label:string,amount:number,date:Date,isExpend:boolean,groupId?:number):Promise<number>{
+  async insert(label:string,amount:number,date:Date,isExpend:boolean,groupId?:number):Promise<number>{
+    let billtypes:BillType[] = await BillTypeService.getBillTypeById(groupId)
+    // 修改数值
+    billtypes.forEach(billtype=>{
+      if(isExpend){
+        billtype.sumValue += amount
+      }
+      // 传入数据库
+      BillTypeService.update(billtype)
+    })
+
 
 
     return BillModel.insert({label:label,amount:amount,date:date.getTime(),isExpend:isExpend.toString(),groupId:groupId})
   }
 
-  /**
-   * 根据分组id删除分组
-   * @param id
-   */
-  deleteBillType(id:number){
-    // 先删除账单或者将分组id变成空
-    BillModel.deleteByGroupId(id).then(rep=>{
-      BillTypeModel.deleteById(id)
-    })
 
-  }
+
 
   /**
    * 将分组和账单变成一个数据
@@ -72,6 +74,16 @@ class BillService{
     }
   }
 
+
+  /**
+   * 查询雏该组的所有bill
+   * @param groupId
+   * @returns
+   */
+  getBillByGroupId(groupId:number){
+    return BillModel.getBillByGroupId(groupId)
+  }
+
   /**
    * 返回区间内日期的账单
    * @param startDate
@@ -82,7 +94,21 @@ class BillService{
     return BillModel.listByDateBetween(startDate.getTime(),endDate.getTime())
   }
 
+  async getIncome(){
+    let bills:Bill[] = await this.list()
+    let income = 0
+    bills.forEach(bill=>{
+      if (!bill.isExpend) {
+        income += bill.amount
+      }
+    })
 
+    return income
+  }
+
+  list(){
+    return BillModel.list()
+  }
 
 
   getAllBill(){

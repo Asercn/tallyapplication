@@ -6,7 +6,7 @@ import BillType from '../../viewmodel/BillType'
 @Component
 export default struct addBillTypePanel {
   @Link isPanelShow:boolean
-  @State billTypeName:string = '其它'
+  @State billTypeName:string = ''
   @State budget:number = 0
   build() {
     Column({space:20}){
@@ -25,16 +25,18 @@ export default struct addBillTypePanel {
         })
 
       Button('submit').onClick(async (event: ClickEvent) => {
-
+        if (this.billTypeName == '' || this.billTypeName == null){
+          this.billTypeName = '其它'
+        }
         // 新增分组
         BillTypeService.insert(this.billTypeName,this.budget).then(()=>{
           this.isPanelShow = false
-          this.billTypeName = '其它'
+          this.billTypeName = ''
           this.budget = 0
         })
       })
       Button('cancel').onClick((event: ClickEvent) => {
-        this.billTypeName = '其它'
+        this.billTypeName = ''
         this.budget = 0
         // 取消新增
         this.isPanelShow = false
