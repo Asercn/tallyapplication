@@ -1,7 +1,7 @@
-import BillModel from '../../model/BillModel'
-import BillTypeModel from '../../model/BillTypeModel'
-import Bill from '../../viewmodel/Bill'
-import BillType from '../../viewmodel/BillType'
+import BillModel from '../model/BillModel'
+import BillTypeModel from '../model/BillTypeModel'
+import Bill from '../viewmodel/Bill'
+import BillType from '../viewmodel/BillType'
 import BillService from './BillService'
 
 class BillTypeService{

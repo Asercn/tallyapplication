@@ -1,4 +1,4 @@
-import BillService from '../../common/services/BillService'
+import BillService from '../../services/BillService'
 import colorUtil from '../../common/utils/ColorUtil'
 import DateUtil from '../../common/utils/DateUtil'
 import DbUtil from '../../common/utils/DbUtil'
@@ -6,7 +6,7 @@ import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
 import GroupInfo from '../../viewmodel/GroupInfo'
 import router from '@ohos.router'
-import BillTypeService from '../../common/services/BillTypeService'
+import BillTypeService from '../../services/BillTypeService'
 
 
 @Component

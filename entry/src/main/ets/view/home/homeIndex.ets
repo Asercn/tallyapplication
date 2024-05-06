@@ -1,5 +1,5 @@
-import BillService from '../../common/services/BillService'
-import BillTypeService from '../../common/services/BillTypeService'
+import BillService from '../../services/BillService'
+import BillTypeService from '../../services/BillTypeService'
 import colorUtil from '../../common/utils/ColorUtil'
 import DateUtil from '../../common/utils/DateUtil'
 import Bill from '../../viewmodel/Bill'

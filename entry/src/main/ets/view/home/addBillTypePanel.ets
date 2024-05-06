@@ -1,4 +1,4 @@
-import BillTypeService from '../../common/services/BillTypeService'
+import BillTypeService from '../../services/BillTypeService'
 import BillModel from '../../model/BillModel'
 import BillTypeModel from '../../model/BillTypeModel'
 import BillType from '../../viewmodel/BillType'

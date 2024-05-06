@@ -31,6 +31,11 @@ struct Index {
         Text('历史账单页面，正在施工中')
       }
       .tabBar(this.TabBuilder('账单记录',1,$r('app.media.historicalBill_select'),$r('app.media.historicalBill')))
+      TabContent(){
+        // 财务管理页面
+        Text('财务管理页面，正在施工中')
+      }
+      .tabBar(this.TabBuilder('财务管理',2,$r('app.media.financial_select'),$r('app.media.financial')))
     }
     .animationDuration(100)
     .scrollable(false)
