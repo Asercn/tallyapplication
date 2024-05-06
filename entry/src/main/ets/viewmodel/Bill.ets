@@ -37,7 +37,7 @@ export default class Bill{
               date: Date,
               isExpend: boolean,
               label: string,
-              typeId:number,
+              typeId?:number,
               id?: number,
               groupId?: number) {
     this.id = id
@@ -46,6 +46,7 @@ export default class Bill{
     this.amount = amount
     this.date = date.getTime()
     this.isExpend = isExpend
+    this.typeId = typeId
   }
 
 }

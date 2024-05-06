@@ -24,23 +24,29 @@ export default struct addBillTypePanel {
           console.log('testTag','addBillTypePanel','budget',this.budget)
         })
 
-      Button('submit').onClick(async (event: ClickEvent) => {
-        if (this.billTypeName == '' || this.billTypeName == null){
-          this.billTypeName = '其它'
-        }
-        // 新增分组
-        BillTypeService.insert(this.billTypeName,this.budget).then(()=>{
-          this.isPanelShow = false
+      Row({space:10}){
+        Button('添加')
+          .backgroundColor($r('app.color.contrast_primary_color'))
+          .onClick(async (event: ClickEvent) => {
+          if (this.billTypeName == '' || this.billTypeName == null){
+            this.billTypeName = '其它'
+          }
+          // 新增分组
+          BillTypeService.insert(this.billTypeName,this.budget).then(()=>{
+            this.isPanelShow = false
+            this.billTypeName = ''
+            this.budget = 0
+          })
+        })
+        Button('取消')
+          .backgroundColor($r('app.color.contrast_primary_color'))
+          .onClick((event: ClickEvent) => {
           this.billTypeName = ''
           this.budget = 0
+          // 取消新增
+          this.isPanelShow = false
         })
-      })
-      Button('cancel').onClick((event: ClickEvent) => {
-        this.billTypeName = ''
-        this.budget = 0
-        // 取消新增
-        this.isPanelShow = false
-      })
+      }
     }
     .padding(10)
   }
