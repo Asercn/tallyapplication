@@ -15,7 +15,6 @@ export default class EntryAbility extends UIAbility {
     })
     //初始化账单表
     DbUtil.createTable(billModel.getCreateTableSql()).then(()=>{
-
       console.log('testTag','EntryAbility','账单表初始化成功！')
     })
     //初始化账单类型表
@@ -23,6 +22,8 @@ export default class EntryAbility extends UIAbility {
 
       console.log('testTag','EntryAbility','账单分组初始化成功！')
     })
+
+
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
 
