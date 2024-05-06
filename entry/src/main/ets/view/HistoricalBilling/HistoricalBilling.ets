@@ -27,6 +27,7 @@ export default struct HistoricalBilling {
     this.bills = await BillService.list()
   }
 
+  //过滤方法
   filterData():Bill[] {
     let res = true
     console.log('testTag', 'BudgetList', 'bills', this.bills)
@@ -51,7 +52,7 @@ export default struct HistoricalBilling {
       Middle()
       // Middle({ selectedType: this.selectedType })
       // 3.记录列表
-      BudgetList({filterData:this.filterData})
+      BudgetList({filterData:this.filterData.bind(this)})
       // BudgetList({ selectedType: this.selectedType })
     }
     .width('100%')

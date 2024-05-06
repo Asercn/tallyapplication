@@ -64,7 +64,7 @@ export default struct BudgetList {
   }
   // 删除列表项
   deleteItem(id: number) {
-    this.arr = this.arr.filter((item) => item.id !== id); // 过滤掉要删除的项
+    this.filteredArr = this.filteredArr.filter((item) => item.id !== id); // 过滤掉要删除的项
   }
 
 
