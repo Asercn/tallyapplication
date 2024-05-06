@@ -1,0 +1,30 @@
+@Preview
+@Component
+export default struct Budget{
+  //显示信息的样式封装
+  @Builder DisplayInformation($$:{label?:string,value?:number,tips?:string}){
+    Column(){
+      Text($$.label)
+      Text($$.value.toFixed(0))
+      Text($$.tips)
+    }
+  }
+  build(){
+    Row(){
+      //收入情况
+      this.DisplayInformation({label:'收入',value:5000})
+      //当天支出和收入环形图
+      Stack(){
+        Progress({
+          value:3000,
+          total:5000,
+          type:ProgressType.Ring
+        }).color($r('app.color.light_primary_color')).style({strokeWidth:10}).width(120)
+        this.DisplayInformation({label:'还可以花',value:2000,tips:`存入${200}`})
+      }
+      //总支出
+      this.DisplayInformation({label:'支出',value:3000})
+    }.width('100%').padding({top:30,bottom:35}).justifyContent(FlexAlign.SpaceEvenly)
+    .backgroundColor(Color.White).borderRadius(20)
+  }
+}
