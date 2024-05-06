@@ -2,7 +2,8 @@ import { BillTypeEnum } from '../../model/BillTypeModels'
 
 @Component
 export default struct ItemConsumeType {
-  @Prop amount:number
+  @Link amount:number
+  @Link type:string
 
   build() {
     Column({space:10}){
@@ -46,11 +47,12 @@ export default struct ItemConsumeType {
           .fontColor('#182431')
           .selectedOptionFont({ size: 20, weight: 400 })
           .optionFont({ size: 20, weight: 400 })
-          .onSelect((index: number) => {
+          .onSelect((index?: number,value?:string) => {
             console.info('Select:' + index)
+            this.type = value;
           })
-
       }
+
     }
     .margin(10)
   }

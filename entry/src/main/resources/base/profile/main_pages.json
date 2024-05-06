@@ -3,6 +3,6 @@
     "pages/Index",
     "pages/Welcome",
     "pages/home/addBillPanel",
-    "pages/ItemIndex",
+    "pages/ItemIndex"
   ]
 }

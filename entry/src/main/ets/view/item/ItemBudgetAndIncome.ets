@@ -3,7 +3,7 @@ import Prompt from '@system.prompt'
 @Component
 export default struct ItemBudgetAndIncome {
 
-  @Prop isIncome:boolean = true
+  @Link isIncome:boolean
 
   build() {
     Row(){
@@ -12,9 +12,9 @@ export default struct ItemBudgetAndIncome {
           .checked(true)
           .height(30)
           .width(30)
-          .onChange((value:boolean)=>{
+          .onChange((text:boolean)=>{
             //选择类型
-            this.isIncome = true
+            this.isIncome = false
             Prompt.showToast({
               message:this.isIncome.toString()+'收入',
             })
@@ -29,7 +29,7 @@ export default struct ItemBudgetAndIncome {
           .width(30)
           .onChange((value:boolean)=>{
             //选择类型
-            this.isIncome = false
+            this.isIncome = true
             Prompt.showToast({
               message:this.isIncome.toString()+'支出',
             })

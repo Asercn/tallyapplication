@@ -1,5 +1,6 @@
-import BillService from '../../common/services/BillService'
+
 import router from '@ohos.router'
+import BillService from '../../services/BillService'
 
 @Entry
 @Component

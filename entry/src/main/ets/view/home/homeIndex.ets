@@ -1,5 +1,4 @@
-import BillService from '../../common/services/BillService'
-import BillTypeService from '../../common/services/BillTypeService'
+
 import colorUtil from '../../common/utils/ColorUtil'
 import DateUtil from '../../common/utils/DateUtil'
 import Bill from '../../viewmodel/Bill'
@@ -10,6 +9,8 @@ import addBillTypePanel from './addBillTypePanel'
 import allBillCard from './AllBillCard'
 import detailsBillCard from './detailsBillCard'
 import IECard from './IECard'
+import BillTypeService from '../../services/BillTypeService'
+import BillService from '../../services/BillService'
 
 @Component
 export default struct homeIndex {

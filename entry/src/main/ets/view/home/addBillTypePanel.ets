@@ -1,6 +1,7 @@
-import BillTypeService from '../../common/services/BillTypeService'
+
 import BillModel from '../../model/BillModel'
 import BillTypeModel from '../../model/BillTypeModel'
+import BillTypeService from '../../services/BillTypeService'
 import BillType from '../../viewmodel/BillType'
 
 @Component

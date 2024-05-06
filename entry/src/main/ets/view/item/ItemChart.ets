@@ -1,38 +1,89 @@
+/**
+ * 绘制折线图的面板
+ */
+// @CustomDialog
+// struct CustomDialogChart{
+//   //定义一个数组
+//   numbersY:number[] = [12,25,50,34.00,90,80,94]
+//
+//   numX:number = 0
+//
+//   controller:CustomDialogController
+//   build(){
+//     Column(){
+//       //绘制折线图
+//       Polyline({width:200,height:200})
+//         // .width(200)
+//         // .height(200)
+//         .points(this.parseArr(this.numX,this.numbersY))
+//         .fillOpacity(0)
+//         .stroke(Color.Black)
+//         .strokeWidth(2)
+//
+//       Button('关闭')
+//         .onClick(()=>{
+//           this.controller.close()
+//         })
+//     }
+//     .width('100%')
+//   }
+//
+//   parseArr(numX:number,numbers:number[]):number[][]{
+//     let arr:number[][] = []
+//     numbers.forEach((num)=>{
+//       arr.push([numX+=40,num])
+//     })
+//     return arr;
+//   }
+// }
 
+
+/**
+ * 获取设置预算的面板
+ */
 @CustomDialog
-struct CustomDialogChart{
-  //定义一个数组
-  numbersY:number[] = [12,25,50,34.00,90,80,94]
-
-  numX:number = 0
+struct CustomDialogBudget{
+  //预算
+  // budget:number
+  @Consume budget:number
 
   controller:CustomDialogController
   build(){
-    Column(){
-      //绘制折线图
-      Polyline({width:200,height:200})
-        // .width(200)
-        // .height(200)
-        .points(this.parseArr(this.numX,this.numbersY))
-        .fillOpacity(0)
-        .stroke(Color.Black)
-        .strokeWidth(2)
+    Column() {
+      Row(){
+        Text("预算")
+          .fontSize(20)
+          .fontWeight(FontWeight.Bold)
+        //弹窗内容
+        TextInput({placeholder:'请输入预算'})
+          .fontSize(20)
+          .type(InputType.Number)
+          .width(200)
+          .height(50)
+          .onChange(val=>{
+            let value = parseFloat(val)
+            this.budget = value>0?value:0
+          })
+      }
+      .width('100%')
+      .height('70%')
 
-      Button('关闭')
-        .onClick(()=>{
-          this.controller.close()
-        })
+      Row(){
+        Button('确认')
+          .onClick(()=>{
+            // this.
+            this.controller.close()
+          })
+        Button('取消')
+          .onClick(()=>{
+            this.controller.close()
+          })
+      }
     }
-    .width('100%')
+    .width('80%')
+    .height(300)
   }
 
-  parseArr(numX:number,numbers:number[]):number[][]{
-    let arr:number[][] = []
-    numbers.forEach((num)=>{
-      arr.push([numX+=40,num])
-    })
-    return arr;
-  }
 }
 
 
@@ -46,13 +97,17 @@ struct CustomDialogChart{
   .justifyContent(FlexAlign.Center)
 }
 
-@Preview
+
 @Component
 export default struct ItemChart {
 
+  @Consume budget:number //预算
+  // @Prop budget:number //预算
+
   //开启弹窗
   controller:CustomDialogController = new CustomDialogController({
-    builder:CustomDialogChart({})
+    // builder:CustomDialogChart({}),
+    builder:CustomDialogBudget()
   })
 
   build() {
@@ -66,7 +121,7 @@ export default struct ItemChart {
       .ColumnStyle()
       .onClick(()=>{
         //展示图表的信息
-        this.controller.open()
+        // this.controller.open()
       })
 
       //2.历史账单记录
@@ -84,10 +139,18 @@ export default struct ItemChart {
       Column({space:5}){
         Image($r("app.media.budget"))
           .width(30)
+
         Text($r('app.string.wallet_budget'))
+
       }
       .ColumnStyle()
+      .onClick(()=>{
+        //展示输入列表
+        this.controller.open()
+      })
     }
+    // .width('100%')
+    // .height('100%')
     .margin({top:20,bottom:20})
   }
 }

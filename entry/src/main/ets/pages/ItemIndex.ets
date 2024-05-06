@@ -1,3 +1,4 @@
+import BillService from '../services/BillService'
 import ItemBudget from '../view/item/ItemBudget'
 import ItemBudgetAndIncome from '../view/item/ItemBudgetAndIncome'
 import ItemChart from '../view/item/ItemChart'
@@ -5,16 +6,50 @@ import ItemConsumeType from '../view/item/ItemConsumeType'
 import ItemList from '../view/item/ItemList'
 import ItemShow from '../view/item/ItemShow'
 import NumberKeyboard from '../view/item/NumberKeyboard'
+import Bill from '../viewmodel/Bill'
+import Prompt from '@system.prompt'
+
+// import { Calendar } from '@ohos.util.';
+
 
 @Entry
 @Component
-struct ItemIndex {
-  @State showPanel:boolean = false
+export default struct ItemIndex {
+  @State @Watch('aboutToAppear') showPanel:boolean = false
   //收入支出类型选择
-  @State isIncome:boolean = true
+  @State isIncome:boolean = false
 
   @State amount:number = 0
   @State value:string = ''
+
+  @State restTodayBudget:number = 0
+  //定义状态变量消费描述
+  @State label:string = ''
+  @State type:string = '' //消费类型
+
+  @State inCome:number = 0 //本月收入
+  @State expenditure:number = 0 //本月支出
+  @Provide budget:number = 0 //本月预算
+
+  //接收今日消费页面数据的数据的数组
+  @State todayBillArr:Bill[] = [] //当日的消费数据
+  @State billArr:Bill[] = []  //本月的消费数据
+
+  //页面加载时获取数据
+  onPageShow(){
+
+  }
+  async aboutToAppear(){
+    this.todayBillArr = await BillService.getBill() //获取当日的账单数据
+    let date = new Date()
+    //获取本月所有消费数据
+    this.billArr = await BillService.listByDateBetween(new Date(
+      date.getFullYear(), date.getMonth(), 1),
+      new Date(date.getFullYear(),date.getMonth()+1, 1))
+
+    Prompt.showToast({message:this.label+':'+this.amount+':'+this.isIncome})
+    console.log('testTag','ItemIndex','billArr',JSON.stringify(this.billArr))
+  }
 
   build() {
     Stack(){
@@ -23,16 +58,16 @@ struct ItemIndex {
         this.Header()
 
         //2.顶部剩余预算展示
-        ItemShow()
+        ItemShow({restTodayBudget:this.restTodayBudget})
 
         //3.图表、账单、预算入口按钮
         ItemChart()
 
         //4.展示本月所有收入和支出
-        ItemBudget()
+        ItemBudget({inCome:this.inCome,expenditure:this.expenditure,budget:this.budget})
 
         //5.本月消费记录列表
-        ItemList()
+        ItemList({billArr:this.billArr})
           .layoutWeight(1)
 
       }
@@ -46,10 +81,10 @@ struct ItemIndex {
         this.consumeDescribe()
 
         //2.金额及类型
-        ItemConsumeType({amount:this.amount})
+        ItemConsumeType({amount:this.amount,type:this.type})
 
         //3.选择收入还是支出类型
-        ItemBudgetAndIncome()
+        ItemBudgetAndIncome({isIncome:this.isIncome})
 
         //4.输入面板
         NumberKeyboard({amount:$amount,value:$value})
@@ -76,6 +111,23 @@ struct ItemIndex {
 
   }
 
+  // //暂定
+  // async handleTodayArr(arr:Bill[]){
+  //   //1.获取当日数据
+  //   arr = await BillService.getBill()
+  //
+  //   //2.遍历数据,得到从前一天后每天的预算
+  //   //2.1获取当前月份
+  //   let date = new Date()
+  //
+  //   //2.2获取当前月份已经消费的数据
+  //   let minDate = new Date(date.getFullYear(),date.getMonth(),0) //按最小日期(月初)
+  //   let maxDate = new Date(date.getFullYear(),date.getMonth(),date.getDate()<0?0:(date.getDate()+1)) //按最小日期(前一天)
+  //
+  //   BillService.listByDateBetween(minDate,maxDate)
+  // }
+
+  //处理面板消费描述输入的信息的方法
   @Builder consumeDescribe(){
     Row(){
       Text('消费描述:')
@@ -84,9 +136,13 @@ struct ItemIndex {
         .maxLength(20)
         .type(InputType.Normal)
         .width(250)
+        .onChange(value=>{
+          this.label=value
+        })
     }
   }
 
+  //提交和取消面板显示的按钮方法
   @Builder PanelButton(){
     Row({space:10}){
       Button('取消')
@@ -96,7 +152,9 @@ struct ItemIndex {
         })
       Button('确认')
         .onClick(()=>{
-          this.showPanel = false
+          BillService.insert(this.label,this.amount,new Date(),this.isIncome).then(rep=>{
+            this.showPanel = false
+          })
         })
     }
     .width('100%')
@@ -104,6 +162,7 @@ struct ItemIndex {
     .justifyContent(FlexAlign.SpaceEvenly)
   }
 
+  //投部显示
   @Builder Header(){
     Row(){
       Image($r('app.media.ic_public_back'))

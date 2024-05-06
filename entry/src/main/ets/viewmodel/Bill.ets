@@ -26,6 +26,10 @@ export default class Bill{
    * 收入还是支出类型
    */
   isExpend:boolean=true
+  /**
+   *支出类型的对应图标的id
+   */
+  typeId?:number
 
 
   constructor(amount: number,
@@ -33,13 +37,15 @@ export default class Bill{
               isExpend: boolean,
               label: string,
               id?: number,
-              groupId?: number) {
+              groupId?: number,
+              typeId?:number) {
     this.id = id
     this.groupId = groupId
     this.label = label
     this.amount = amount
     this.date = date.getTime()
     this.isExpend = isExpend
+    this.typeId=typeId
   }
 
 }

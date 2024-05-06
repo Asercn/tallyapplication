@@ -1,5 +1,9 @@
+
 @Component
 export default struct ItemShow {
+  //今日剩余预算
+  @Link restTodayBudget:number
+
   build() {
     Stack(){
       Image($r('app.media.budget_background'))
@@ -12,7 +16,7 @@ export default struct ItemShow {
         Text('今日剩余预算')
           .fontSize(15).fontColor(Color.White)
           .opacity(0.6)
-        Text('￥100.00')
+        Text(`￥${this.restTodayBudget.toFixed(2)}`)
           .fontSize(20).fontColor(Color.White)
           .fontWeight(FontWeight.Bold)
       }

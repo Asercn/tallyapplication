@@ -1,5 +1,6 @@
-import BillService from '../../common/services/BillService'
+
 import DateUtil from '../../common/utils/DateUtil'
+import BillService from '../../services/BillService'
 import Bill from '../../viewmodel/Bill'
 
 @Component

@@ -1,4 +1,14 @@
+import BillService from '../services/BillService';
 import homeIndex from '../view/home/homeIndex';
+import ItemBudget from '../view/item/ItemBudget';
+import ItemBudgetAndIncome from '../view/item/ItemBudgetAndIncome';
+import ItemChart from '../view/item/ItemChart';
+import ItemConsumeType from '../view/item/ItemConsumeType';
+import ItemList from '../view/item/ItemList';
+import ItemShow from '../view/item/ItemShow';
+import NumberKeyboard from '../view/item/NumberKeyboard';
+import Bill from '../viewmodel/Bill';
+import ItemIndex from './ItemIndex';
 
 @Entry
 @Component
@@ -7,6 +17,39 @@ struct Index {
   title:string = '首页'
   titleFont:number = 30
   @Provide Refresh:boolean = false
+
+
+  @State showPanel:boolean = false
+  //收入支出类型选择
+  @State isIncome:boolean = true
+
+  @State amount:number = 0
+  @State value:string = ''
+
+  @State restTodayBudget:number = 0
+  //定义状态变量消费描述
+  @State label:string = 'a'
+  @State type:string = '' //消费类型
+
+  @State inCome:number = 0 //本月收入
+  @State expenditure:number = 0 //本月支出
+  // @Provide budget:number = 0 //本月预算
+
+  //接收今日消费页面数据的数据的数组
+  @State todayBillArr:Bill[] = []
+  @State billArr:Bill[] = []
+
+  //页面加载时获取数据
+  async aboutToAppear(){
+    this.todayBillArr = await BillService.getBill() //获取当日的账单数据
+    let date = new Date()
+    //获取本月所有消费数据
+    this.billArr = await BillService.listByDateBetween(new Date(date.getFullYear(), date.getMonth(), 1),
+      new Date(date.getFullYear(),date.getMonth()+1, 0))
+
+    // Prompt.showToast({message:this.label+':'+this.amount+':'+this.isIncome})
+  }
+
   onPageShow(){
     this.Refresh = true
   }
@@ -27,6 +70,11 @@ struct Index {
       }
       .tabBar(this.TabBuilder('首页',0,$r('app.media.home_select'),$r('app.media.home')))
 
+      TabContent(){
+        ItemIndex()
+      }
+      .tabBar(this.TabBuilder('财务管理页面',1,$r('app.media.historicalBill_select'),$r('app.media.historicalBill')))
+
 
       TabContent(){
         // 账单记录页面
@@ -41,6 +89,7 @@ struct Index {
     })
 
   }
+
 
   // 自定义tabBar
   @Builder TabBuilder(title: string, targetIndex: number, selectedImg: Resource, normalImg: Resource) {
@@ -135,3 +184,4 @@ struct Index {
   }
 
 }
+
