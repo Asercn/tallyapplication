@@ -1,3 +1,5 @@
+import BillService from '../../common/services/BillService';
+import DateUtil from '../../common/utils/DateUtil';
 import Bill from '../../viewmodel/Bill';
 
 @Extend(Text)
@@ -18,6 +20,8 @@ function filterData(arr, selectedType) {
 
 @Component
 export default struct BudgetList {
+  //从数据库中获取到所有的bill
+  @State bills:Bill[] = []
   // 预先填充一些初始数据
   @State arr: { id: number, name: string, amount: number, month: number }[] = [
     { id: 1, name: '食品', amount: -150, month: 5 }, // 1 表示一月
@@ -32,7 +36,6 @@ export default struct BudgetList {
     { id: 10, name: '红包', amount: 180, month: 5 },
 
   ];
-
 
   @State newName: string = '';
   @State newAmount: number = 0;
@@ -51,8 +54,15 @@ export default struct BudgetList {
     .onClick(() => this.deleteItem(id))
     .backgroundColor(Color.Transparent)
   }
+
+  // 获取到所有的bill数据方法
+  async getBills(){
+    this.bills = await BillService.list()
+  }
+
   // 添加新项
   addItem(name: string, amount: number, month: number) {
+    this.getBills()
     const newId = this.arr.length > 0 ? this.arr[this.arr.length - 1].id + 1 : 1;
     this.arr.push({ id: newId, name, amount, month });
   }
@@ -76,7 +86,10 @@ export default struct BudgetList {
       Row() {
         Blank()
         Button("＋") // 这是加号按钮
-          .onClick(() => this.isDialogVisible = true) // 点击后显示对话框
+          .onClick(() => {
+            this.isDialogVisible = true
+            this.getBills()
+          }) // 点击后显示对话框
       }.padding(10).height(50).position({x:'50%',y:'88%'}).zIndex(10)
       .translate({x:'-50%',y:'-100%'})
       Column() {
