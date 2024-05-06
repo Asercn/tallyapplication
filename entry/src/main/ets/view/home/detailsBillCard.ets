@@ -7,6 +7,7 @@ import BillType from '../../viewmodel/BillType'
 import GroupInfo from '../../viewmodel/GroupInfo'
 import router from '@ohos.router'
 import BillTypeService from '../../services/BillTypeService'
+import { BillModelTypes, BillTypeEnum } from '../../model/BillTypeModels'
 
 
 @Component
@@ -40,21 +41,26 @@ export default struct detailsBillCard {
                     ListItem(){
                       if (index === group.items.length-1){
                         Row(){
+                          Row(){
+                            Image(BillModelTypes[item.typeId].typeName).width('100%')
+                          }
+                          // .backgroundColor('green')
+                          .width('15%')
                           Column(){
                             Row(){
                               Text(`${item.label}`)
                               Blank()
                               Text(`${item.amount.toFixed(2)}`)
                                 .fontColor(item.isExpend?$r('app.color.primary_color'):$r('app.color.contrast_primary_color'))
-                            }
-                            .width('100%')
+                            }.width('100%')
                             Row(){
                               Text(`${DateUtil.formatDateMore(item.date)}`)
                                 .fontColor('#cfcfcf')
                                 .fontSize(12)
-                            }
-                            .width('100%')
+                            }.width('100%')
                           }
+                          // .backgroundColor('red')
+                          .width('85%')
                         }
                         .padding(10)
                         .offset({x:15})
@@ -64,21 +70,26 @@ export default struct detailsBillCard {
                         .border({width:{bottom:2},color:Color.Gray})
                       } else {
                         Row(){
+                          Row(){
+                            Image(BillModelTypes[item.typeId].typeName).width('100%')
+                          }
+                          .backgroundColor('green')
+                          .width('15%')
                           Column(){
                             Row(){
                               Text(`${item.label}`)
                               Blank()
                               Text(`${item.amount.toFixed(2)}`)
                                 .fontColor(item.isExpend?$r('app.color.primary_color'):$r('app.color.contrast_primary_color'))
-                            }
-                            .width('100%')
+                            }.width('100%')
                             Row(){
                               Text(`${DateUtil.formatDateMore(item.date)}`)
                                 .fontColor('#cfcfcf')
                                 .fontSize(12)
-                            }
-                            .width('100%')
+                            }.width('100%')
                           }
+                          .width('85%')
+                          .backgroundColor('red')
                         }
                         .padding(10)
                         .offset({x:15})

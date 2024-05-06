@@ -24,7 +24,7 @@ export default struct addBillTypePanel {
           console.log('testTag','addBillTypePanel','budget',this.budget)
         })
 
-      Row({space:10}){
+      Row({space:20}){
         Button('添加')
           .backgroundColor($r('app.color.contrast_primary_color'))
           .onClick(async (event: ClickEvent) => {

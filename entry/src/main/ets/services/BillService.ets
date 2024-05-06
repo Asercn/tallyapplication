@@ -18,7 +18,7 @@ class BillService{
    * @param groupId 分组id
    * @returns
    */
-  async insert(label:string,amount:number,date:Date,isExpend:boolean,groupId?:number):Promise<number>{
+  async insert(label:string,amount:number,date:Date,isExpend:boolean,groupId?:number,typeId?:number):Promise<number>{
     let billtypes:BillType[] = await BillTypeService.getBillTypeById(groupId)
     // 修改数值
     billtypes.forEach(billtype=>{
@@ -31,7 +31,7 @@ class BillService{
 
 
 
-    return BillModel.insert({label:label,amount:amount,date:date.getTime(),isExpend:isExpend.toString(),groupId:groupId})
+    return BillModel.insert({label:label,amount:amount,date:date.getTime(),isExpend:isExpend.toString(),groupId:groupId,typeId:typeId})
   }
 
 
@@ -106,8 +106,9 @@ class BillService{
     return income
   }
 
-  list(){
-    return BillModel.list()
+  async list(){
+    let bills:Bill[] = await BillModel.list()
+    return bills
   }
 
 

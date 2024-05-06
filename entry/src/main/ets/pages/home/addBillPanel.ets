@@ -1,5 +1,6 @@
 import BillService from '../../services/BillService'
 import router from '@ohos.router'
+import { BillTypeEnum } from '../../model/BillTypeModels'
 
 @Entry
 @Component
@@ -11,6 +12,7 @@ export default struct addBillPanel {
   @State date:Date = new Date()
   @State isExpend:boolean = true
   @State amount:number = 0
+  @State typeId:BillTypeEnum = BillTypeEnum.TRAVEL
 
 
   aboutToAppear(){
@@ -33,7 +35,35 @@ export default struct addBillPanel {
           this.amount = value
           console.log('testTag','addBillTypePanel','amount',this.amount)
         })
+      //类型展示
+      Row({space:10}){
+        Text('消费类型')
+          .fontSize(20)
 
+        /**
+         * 选择定义的枚举常量，下标与枚举常量值对应
+         */
+        Select([
+          { value: $r('app.string.app_name'), icon:  $r('app.media.year') },
+          { value: $r('app.string.app_name'), icon:  $r('app.media.year') },
+          { value: $r('app.string.app_name'), icon:  $r('app.media.year') },
+          { value: $r('app.string.app_name'), icon:  $r('app.media.year') },
+          { value: $r('app.string.app_name'), icon:  $r('app.media.year') },
+          { value: $r('app.string.app_name'), icon:  $r('app.media.year') },
+          { value: $r('app.string.app_name'), icon:  $r('app.media.year') },
+        ])
+          .selected(6) //默认选择的下标
+          .value('请选择')
+          .font({ size: 20, weight: 500 })
+          .fontColor('#182431')
+          .selectedOptionFont({ size: 20, weight: 400 })
+          .optionFont({ size: 20, weight: 400 })
+          .onSelect((index: number,value?:string) => {
+            let i = index
+            console.info('Select:' + index)
+            this.typeId = i
+          })
+      }
 
       Row({space:20}){
         Row(){
@@ -54,23 +84,29 @@ export default struct addBillPanel {
         }
       }
 
-      Button('submit').onClick((event: ClickEvent) => {
-        console.log('testTag','addBillPanel','isExpend',this.isExpend)
-        // 新增账单bill
-        BillService.insert(this.label,this.amount,this.date,this.isExpend,this.groupId).then((rep)=>{
-          router.back()
-          this.label = ''
-          this.amount = 0
-          this.date = new Date()
-          this.isExpend = true
-          console.log('testTag','addBillPanel','rep',JSON.stringify(rep))
+      Row({space:20 }){
+        Button('提交')
+          .backgroundColor($r('app.color.contrast_primary_color'))
+          .onClick((event: ClickEvent) => {
+            console.log('testTag','addBillPanel','type',this.typeId)
+            // 新增账单bill
+            BillService.insert(this.label,this.amount,this.date,this.isExpend,this.groupId,this.typeId).then((rep)=>{
+              router.back()
+              this.label = ''
+              this.amount = 0
+              this.date = new Date()
+              this.isExpend = true
+              console.log('testTag','addBillPanel','rep',JSON.stringify(rep))
 
-        })
-      })
-      Button('cancel').onClick((event: ClickEvent) => {
-        // 取消新增
-        router.back()
-      })
+            })
+          })
+        Button('取消')
+          .backgroundColor($r('app.color.contrast_primary_color'))
+          .onClick((event: ClickEvent) => {
+            // 取消新增
+            router.back()
+          })
+      }
     }
     .padding(10)
   }
