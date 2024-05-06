@@ -1,5 +1,18 @@
 {
   "module": {
+    "requestPermissions": [
+      // 读取无障碍权限,由于无法获取到模拟器的UUID，所以无法申请证书，不能够申请到无障碍权限，所以自动记账功能寄了
+//      {
+//        "name": "ohos.permission.READ_ACCESSIBILITY_CONFIG",
+//        "reason": "$string:reason",
+//        "usedScene": {
+//          "abilities": [
+//            "EntryAbility"
+//          ],
+//          "when": "always"
+//        }
+//      },
+    ],
     "name": "entry",
     "type": "entry",
     "description": "$string:module_desc",
