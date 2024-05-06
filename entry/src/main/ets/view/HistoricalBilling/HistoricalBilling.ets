@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import BillService from '../../common/services/BillService'
+import BillService from '../../services/BillService'
 import Bill from '../../viewmodel/Bill'
 import BudgetList from './BudgetList'
 import Header from './Header'

@@ -1,5 +1,4 @@
-import BillService from '../../common/services/BillService';
-import DateUtil from '../../common/utils/DateUtil';
+
 import Bill from '../../viewmodel/Bill';
 
 @Extend(Text)
