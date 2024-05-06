@@ -7,21 +7,21 @@ function grayText() {
   .fontSize(14)
   .fontColor($r('app.color.dark_primary_color'))
 }
-function filterData(arr, selectedType) {
-  return arr.filter((item) => {
-    if (selectedType === '收入') {
-      return item.amount > 0; // 只显示正数
-    } else if (selectedType === '支出') {
-      return item.amount < 0; // 只显示负数
-    }
-    return true; // 显示全部
-  });
-}
+
 
 @Component
 export default struct BudgetList {
+  // 共享状态，用于判断过滤的类型
+  @Consume @Watch('updateFilteredArr') selectedType:string ; // 默认显示全部
+  @State filteredArr: Array<any> = [];
+  updateFilteredArr() {
+    //console.log('updateFilteredArr','Budget')
+    this.filteredArr = this.filterData(); // 在组件外部过滤数据
+    console.log('testTag','BudgetList','filteredArr',JSON.stringify(this.filteredArr))
+  }
+  filterData:()=>Bill[]
   //从数据库中获取到所有的bill
-  @State bills:Bill[] = []
+  @Consume bills:Bill[]
   // 预先填充一些初始数据
   @State arr: { id: number, name: string, amount: number, month: number }[] = [
     { id: 1, name: '食品', amount: -150, month: 5 }, // 1 表示一月
@@ -55,14 +55,10 @@ export default struct BudgetList {
     .backgroundColor(Color.Transparent)
   }
 
-  // 获取到所有的bill数据方法
-  async getBills(){
-    this.bills = await BillService.list()
-  }
+
 
   // 添加新项
   addItem(name: string, amount: number, month: number) {
-    this.getBills()
     const newId = this.arr.length > 0 ? this.arr[this.arr.length - 1].id + 1 : 1;
     this.arr.push({ id: newId, name, amount, month });
   }
@@ -70,16 +66,11 @@ export default struct BudgetList {
   deleteItem(id: number) {
     this.arr = this.arr.filter((item) => item.id !== id); // 过滤掉要删除的项
   }
-  // 共享状态，用于判断过滤的类型
-  @Consume @Watch('updateFilteredArr') selectedType: string ; // 默认显示全部
-  @State filteredArr: Array<any> = [];
+
 
   aboutToAppear(){
-    this.updateFilteredArr()
   }
-  updateFilteredArr() {
-    this.filteredArr = filterData(this.arr, this.selectedType); // 在组件外部过滤数据
-  }
+
 
   build() {
     Stack(){
@@ -88,19 +79,18 @@ export default struct BudgetList {
         Button("＋") // 这是加号按钮
           .onClick(() => {
             this.isDialogVisible = true
-            this.getBills()
           }) // 点击后显示对话框
       }.padding(10).height(50).position({x:'50%',y:'88%'}).zIndex(10)
       .translate({x:'-50%',y:'-100%'})
       Column() {
         // 列表显示部分
         List({ initialIndex: 0 }) {
-          ForEach(this.filteredArr, (item) => {
+          ForEach(this.filteredArr, (item:Bill) => {
             ListItem() {
               Row() {
                 Column() {
-                  Text(item.name).fontSize(20)
-                  Text(`月份: ${item.month}`).fontSize(14).grayText() // 显示月份
+                  Text(item.label).fontSize(20)
+                  Text(`月份: ${new Date(item.date).getMonth()+1}`).fontSize(14).grayText() // 显示月份
                 }
                 Blank()
                 Text(`${item.amount}元`).fontSize(18)

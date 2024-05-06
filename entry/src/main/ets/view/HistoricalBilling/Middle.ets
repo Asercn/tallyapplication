@@ -4,23 +4,26 @@ import DatePickerDialog from './DatePickerDialog'
 
 @Component
 export default struct Middle{
-  @Consume selectedType: string ; // 用于存储选择的类别
+  @Consume selectedType:string ; // 用于存储选择的类别
+
   @StorageProp('selectedDate') selectedDate:number = DateUtil.beginTimeOfDay(new Date())
   controller:CustomDialogController = new CustomDialogController({
     builder:DatePickerDialog({
       selectedDate:new Date(this.selectedDate)
     })  // 数据回显
   })
+
   build(){
     Column({space:15}){
       Row(){
         Row(){
           Column(){
             Radio({value:'全部账单',group:'账单'})
-              .checked(true)
+              .checked(false)
               .onChange((flag) => {
                 if (flag) {
                   this.selectedType = '全部账单'
+                  console.log('a','Middle',this.selectedType)
                 }
               })
             Text('全部账单').fontSize(10).fontWeight(FontWeight.Bold)
@@ -30,6 +33,7 @@ export default struct Middle{
               .onChange((flag) => {
                 if (flag) {
                   this.selectedType = '收入'
+                  console.log('b','Middle',this.selectedType)
                 }
               })
             Text('收入').fontSize(10).fontWeight(FontWeight.Bold)
@@ -39,6 +43,7 @@ export default struct Middle{
               .onChange((flag) => {
                 if (flag) {
                   this.selectedType = '支出'
+                  console.log('c','Middle',this.selectedType)
                 }
               })
             Text('支出').fontSize(10).fontWeight(FontWeight.Bold)

@@ -29,7 +29,7 @@ struct Index {
       .tabBar(this.TabBuilder('首页',0,$r('app.media.home_select'),$r('app.media.home')))
       TabContent(){
         // 账单记录页面
-        HistoricalBilling()
+        HistoricalBilling({currentIndex:this.currentIndex})
       }
       .tabBar(this.TabBuilder('账单记录',1,$r('app.media.historicalBill_select'),$r('app.media.historicalBill')))
     }
