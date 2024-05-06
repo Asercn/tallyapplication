@@ -2,7 +2,7 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "模块描述"
+      "value": "module description"
     },
     {
       "name": "EntryAbility_desc",
@@ -10,7 +10,68 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "记账"
+      "value": "label"
+    },
+    {
+      "name": "wallet_budget",
+      "value": "预算"
+    },
+    {
+      "name": "wallet_chart",
+      "value": "图表"
+    },
+    {
+      "name": "wallet_bill",
+      "value": "账单"
+    },
+    {
+      "name": "wallet_income",
+      "value": "收入"
+    },
+    {
+      "name": "wallet_expenditure",
+      "value": "支出"
+    },
+    {
+      "name": "wallet_consume_records",
+      "value": "本月消费记录"
+    },
+    {
+      "name": "wallet_panel_amount",
+      "value": "金额"
+    },
+    {
+      "name": "wallet_panel_type",
+      "value": "支出类型"
+    },
+    {
+      "name": "consume_type_travel",
+      "value": "出行"
+    },
+    {
+      "name": "consume_type_shop",
+      "value": "购物"
+    },
+    {
+      "name": "consume_type_hydropower",
+      "value": "水电"
+    },
+    {
+      "name": "consume_type_rent",
+      "value": "房租"
+    },
+    {
+      "name": "consume_type_eating",
+      "value": "饮食"
+    },
+    {
+      "name": "consume_type_phonebill",
+      "value": "话费"
+    },
+    {
+      "name": "consume_type_other",
+      "value": "其他"
     }
+
   ]
 }

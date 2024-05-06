@@ -26,6 +26,8 @@ struct Index {
         .height('100%')
       }
       .tabBar(this.TabBuilder('首页',0,$r('app.media.home_select'),$r('app.media.home')))
+
+
       TabContent(){
         // 账单记录页面
         Text('历史账单页面，正在施工中')

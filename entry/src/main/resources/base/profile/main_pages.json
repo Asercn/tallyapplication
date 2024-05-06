@@ -2,6 +2,7 @@
   "src": [
     "pages/Index",
     "pages/Welcome",
-    "pages/home/addBillPanel"
+    "pages/home/addBillPanel",
+    "pages/ItemIndex",
   ]
 }
