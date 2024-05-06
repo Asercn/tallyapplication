@@ -6,6 +6,7 @@ import window from '@ohos.window';
 import DbUtil from '../common/utils/DbUtil';
 import billModel from '../model/BillModel';
 import billTypeModel from '../model/BillTypeModel';
+import accessibility from '@ohos.accessibility';
 
 export default class EntryAbility extends UIAbility {
   async onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): Promise<void> {
@@ -22,6 +23,13 @@ export default class EntryAbility extends UIAbility {
 
       console.log('testTag','EntryAbility','账单分组初始化成功！')
     })
+
+    // 创建持久化任务
+    // 查看是否启用无障碍功能
+    accessibility.on('accessibilityStateChange',(data)=>{
+      console.log('testTag','EntryAbility','data',JSON.stringify(data))
+    })
+
 
 
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');

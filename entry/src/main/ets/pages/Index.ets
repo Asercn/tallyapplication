@@ -1,10 +1,11 @@
+import router from '@ohos.router';
 import homeIndex from '../view/home/homeIndex';
 
 @Entry
 @Component
 struct Index {
   @State currentIndex:number = 0
-  title:string = '首页'
+
   titleFont:number = 30
   @Provide Refresh:boolean = false
   onPageShow(){
@@ -18,7 +19,7 @@ struct Index {
       TabContent(){
         Column() {
           // 头部
-          this.header({title:this.title})
+          this.header({title:'首页'})
           // 首页
           homeIndex()
         }
@@ -123,7 +124,9 @@ struct Index {
         .backgroundColor(Color.Transparent)
         .onClick((event: ClickEvent) => {
           // 打开设计面板或者页面
-
+          router.pushUrl({
+            url:"pages/setting/setting"
+          })
         })
       }
       .justifyContent(FlexAlign.End)
