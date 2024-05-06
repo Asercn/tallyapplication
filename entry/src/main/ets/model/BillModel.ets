@@ -13,7 +13,7 @@ const CREATE_TABLE_SQL: string =
           amount DOUBLE NOT NULL,
           date INTEGER NOT NULL,
           is_expend BOOLEAN NOT NULL,
-          group_id INTEGER NOT NULL,
+          group_id INTEGER,
           type_id INTEGER
         )`
 const TABLE_NAME = 'bill'

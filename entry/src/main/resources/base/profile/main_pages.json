@@ -3,6 +3,8 @@
     "pages/Index",
     "pages/Welcome",
     "pages/home/addBillPanel",
-    "pages/setting/setting"
+    "pages/setting/setting",
+    "pages/home/addBillPanel",
+    "pages/ItemIndex"
   ]
 }
