@@ -27,11 +27,17 @@ export default class Bill{
    */
   isExpend:boolean=true
 
+  /**
+   * 类型id
+   */
+  typeId:number
+
 
   constructor(amount: number,
               date: Date,
               isExpend: boolean,
               label: string,
+              typeId:number,
               id?: number,
               groupId?: number) {
     this.id = id
