@@ -73,7 +73,7 @@ export default struct detailsBillCard {
                           Row(){
                             Image(BillModelTypes[item.typeId].typeName).width('100%')
                           }
-                          .backgroundColor('green')
+                          // .backgroundColor('green')
                           .width('15%')
                           Column(){
                             Row(){
@@ -89,7 +89,7 @@ export default struct detailsBillCard {
                             }.width('100%')
                           }
                           .width('85%')
-                          .backgroundColor('red')
+                          // .backgroundColor('red')
                         }
                         .padding(10)
                         .offset({x:15})
