@@ -88,6 +88,25 @@ class DateUtil{
   };
 }
 
+  //获取本月到指定日期为止还剩多少天
+  getRestDayOfMonth(date:Date):number{
+    let today = new Date(date)
+    //获取本月第一天
+    let firstDateOfMonth = new Date(today.getFullYear(),today.getMonth(),1).getTime()
+    //获取本月最后一天
+    let LastDateOfMonth = new Date(today.getFullYear(),today.getMonth()+1,1).getTime()
+    let yesterday:number
+    if (today.getTime()<firstDateOfMonth+(1000*60*60*24)) { //表示今天是每月的一号
+      yesterday = new Date(today.getFullYear(),today.getMonth(),1).getTime()
+    }else {
+      yesterday = new Date(today.getFullYear(),today.getMonth(),today.getDate()).getTime()
+    }
+    //获取前一天到月末的时间
+    let datesOfMonth:number = Math.ceil((LastDateOfMonth - yesterday) / (1000 * 60 * 60 * 24));
+
+    return datesOfMonth
+  }
+
 
 
 }

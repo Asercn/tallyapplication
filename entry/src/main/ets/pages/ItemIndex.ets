@@ -8,6 +8,7 @@ import ItemShow from '../view/item/ItemShow'
 import NumberKeyboard from '../view/item/NumberKeyboard'
 import Bill from '../viewmodel/Bill'
 import Prompt from '@system.prompt'
+import DateUtil from '../common/utils/DateUtil'
 
 // import { Calendar } from '@ohos.util.';
 
@@ -25,30 +26,68 @@ export default struct ItemIndex {
   @State restTodayBudget:number = 0
   //定义状态变量消费描述
   @State label:string = ''
-  @State type:string = '' //消费类型
+  @State typeId:number = 6 //消费类型
 
   @State inCome:number = 0 //本月收入
   @State expenditure:number = 0 //本月支出
   @Provide budget:number = 0 //本月预算
 
+  @Provide @Watch('aboutToAppear') count:number = 0
+
   //接收今日消费页面数据的数据的数组
   @State todayBillArr:Bill[] = [] //当日的消费数据
   @State billArr:Bill[] = []  //本月的消费数据
 
-  //页面加载时获取数据
-  onPageShow(){
+  @State taskId:number = setTimeout(this.handleBillArr,1000)//标识定时计数器
 
-  }
+
   async aboutToAppear(){
     this.todayBillArr = await BillService.getBill() //获取当日的账单数据
+    //获取当天时间
     let date = new Date()
-    //获取本月所有消费数据
+    //1.获取本月所有消费数据
     this.billArr = await BillService.listByDateBetween(new Date(
       date.getFullYear(), date.getMonth(), 1),
       new Date(date.getFullYear(),date.getMonth()+1, 1))
 
-    Prompt.showToast({message:this.label+':'+this.amount+':'+this.isIncome})
+    this.handleBillArr() //更新每日剩余预算
+
+
+    console.log('testTag','ItemIndex','restTodayBudget',this.restTodayBudget.toString())
+    // Prompt.showToast({message:this.label+':'+this.amount+':'+this.isIncome})
     console.log('testTag','ItemIndex','billArr',JSON.stringify(this.billArr))
+  }
+
+  //处理数据
+  async handleBillArr(){
+    //获取当天时间
+    let date = new Date()
+    //1.获取本月所有消费数据
+    this.billArr = await BillService.listByDateBetween(new Date(
+      date.getFullYear(), date.getMonth(), 1),
+      new Date(date.getFullYear(),date.getMonth()+1, 1))
+
+    //归零数据
+    this.expenditure = 0
+    this.inCome = 0
+
+    //2.遍历处理本月所有数据
+    this.billArr.forEach((item:Bill)=>{
+      if (item.isExpend) {
+        this.expenditure += item.amount
+      }else {
+        this.inCome += item.amount
+      }
+    })
+
+    //计算今日到月末的天数
+    let days = DateUtil.getRestDayOfMonth(date)
+    //获取每日的预算
+    if (this.budget > this.expenditure) {
+      this.restTodayBudget = (this.budget-this.expenditure)/days
+    }else {
+      this.restTodayBudget = 0
+    }
   }
 
   build() {
@@ -81,13 +120,13 @@ export default struct ItemIndex {
         this.consumeDescribe()
 
         //2.金额及类型
-        ItemConsumeType({amount:this.amount,type:this.type})
+        ItemConsumeType({amount:this.amount,typeId:this.typeId})
 
         //3.选择收入还是支出类型
         ItemBudgetAndIncome({isIncome:this.isIncome})
 
         //4.输入面板
-        NumberKeyboard({amount:$amount,value:$value})
+        NumberKeyboard({amount:this.amount,value:this.value})
 
         //5.按钮
         this.PanelButton()
@@ -149,12 +188,16 @@ export default struct ItemIndex {
         .backgroundColor(Color.Gray)
         .onClick(()=>{
           this.showPanel = false
+          this.count++
         })
       Button('确认')
         .onClick(()=>{
-          BillService.insert(this.label,this.amount,new Date(),this.isIncome).then(rep=>{
+            BillService.insert(this.label,this.amount,new Date(),this.isIncome,0,this.typeId).then(rep=>{
             this.showPanel = false
+              this.count++
           })
+          // this.handleBillArr() //处理数据库更新的新数据
+          this.taskId++
         })
     }
     .width('100%')
@@ -162,7 +205,7 @@ export default struct ItemIndex {
     .justifyContent(FlexAlign.SpaceEvenly)
   }
 
-  //投部显示
+  //头部显示
   @Builder Header(){
     Row(){
       Image($r('app.media.ic_public_back'))
@@ -171,7 +214,7 @@ export default struct ItemIndex {
       Blank()
 
       Text('财务管理页面')
-      // .layoutWeight(1)
+
     }
     .width('90%')
     .margin(5)

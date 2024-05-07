@@ -97,7 +97,16 @@ class BillModel{
   listByDateBetween(minDate:number,maxDate:number):Promise<Bill[]>{
     let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
     predicates.between('date',minDate,maxDate)
-    return DbUtil.queryForList(predicates,COLUMNS)
+    return new Promise<Bill[]>((resolve,reject)=>{
+       DbUtil.queryForList(predicates,COLUMNS).then(bills=>{
+         bills.forEach((bill:Bill)=>{
+           bill.isExpend = JSON.parse(bill.isExpend.toString())
+
+         })
+         console.log('testTag','BillModel','bills',JSON.stringify(bills))
+         resolve(JSON.parse(JSON.stringify(bills)))
+       })
+    })
   }
 
 

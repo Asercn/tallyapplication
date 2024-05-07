@@ -5,7 +5,6 @@ import data from '@ohos.telephony.data'
 @Component
 export default struct Setting {
 
-
 aboutToAppear(){
   let captionsManager = accessibility.getCaptionsManager()
   let abilityType:accessibility.AbilityType = 'all'

@@ -3,7 +3,7 @@ import { BillTypeEnum } from '../../model/BillTypeModels'
 @Component
 export default struct ItemConsumeType {
   @Link amount:number
-  @Link type:string
+  @Link typeId:number
 
   build() {
     Column({space:10}){
@@ -33,13 +33,13 @@ export default struct ItemConsumeType {
          * 选择定义的枚举常量，下标与枚举常量值对应
          */
         Select([
-          { value: $r('app.string.consume_type_travel'), icon:  $r('app.media.consume') },
-          { value: $r('app.string.consume_type_shop'), icon:  $r('app.media.consume') },
-          { value: $r('app.string.consume_type_hydropower'), icon:  $r('app.media.consume') },
-          { value: $r('app.string.consume_type_rent'), icon:  $r('app.media.consume') },
-          { value:$r('app.string.consume_type_eating'), icon:  $r('app.media.consume') },
-          { value: $r('app.string.consume_type_phonebill'), icon:  $r('app.media.consume') },
-          { value: $r('app.string.consume_type_other'), icon:  $r('app.media.consume') },
+          { value: $r('app.string.consume_type_travel'), icon:  $r('app.media.travel') },
+          { value: $r('app.string.consume_type_shop'), icon:  $r('app.media.shop') },
+          { value: $r('app.string.consume_type_hydropower'), icon:  $r('app.media.hydropower') },
+          { value: $r('app.string.consume_type_rent'), icon:  $r('app.media.rent') },
+          { value:$r('app.string.consume_type_eating'), icon:  $r('app.media.eating') },
+          { value: $r('app.string.consume_type_phonebill'), icon:  $r('app.media.phone') },
+          { value: $r('app.string.consume_type_other'), icon:  $r('app.media.others') },
         ])
           .selected(6) //默认选择的下标
           .value('请选择')
@@ -47,9 +47,9 @@ export default struct ItemConsumeType {
           .fontColor('#182431')
           .selectedOptionFont({ size: 20, weight: 400 })
           .optionFont({ size: 20, weight: 400 })
-          .onSelect((index?: number,value?:string) => {
+          .onSelect((index?: number) => {
             console.info('Select:' + index)
-            this.type = value;
+            this.typeId = index;
           })
       }
 

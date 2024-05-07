@@ -7,7 +7,7 @@ import BillType from '../../viewmodel/BillType'
 import GroupInfo from '../../viewmodel/GroupInfo'
 import router from '@ohos.router'
 import BillTypeService from '../../services/BillTypeService'
-import { BillModelTypes, BillTypeEnum } from '../../model/BillTypeModels'
+import { BillTypeImages } from '../../model/BillTypeModels'
 
 
 @Component
@@ -42,7 +42,7 @@ export default struct detailsBillCard {
                       if (index === group.items.length-1){
                         Row(){
                           Row(){
-                            Image(BillModelTypes[item.typeId].typeName).width('100%')
+                            Image(BillTypeImages[item.typeId].typeName).width('100%')
                           }
                           // .backgroundColor('green')
                           .width('15%')
@@ -71,7 +71,7 @@ export default struct detailsBillCard {
                       } else {
                         Row(){
                           Row(){
-                            Image(BillModelTypes[item.typeId].typeName).width('100%')
+                            Image(BillTypeImages[item.typeId].typeName).width('100%')
                           }
                           // .backgroundColor('green')
                           .width('15%')
