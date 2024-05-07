@@ -158,7 +158,7 @@ struct Index {
           // 打开设计面板或者页面
           router.pushUrl({
             url:"pages/setting/setting"
-          })
+          },router.RouterMode.Single)
         })
       }
       .justifyContent(FlexAlign.End)

@@ -2,6 +2,11 @@ import BillService from '../../services/BillService'
 import router from '@ohos.router'
 import { BillTypeEnum } from '../../model/BillTypeModels'
 
+
+
+/**
+ * 该页面弃用
+ */
 @Entry
 @Component
 export default struct addBillPanel {
