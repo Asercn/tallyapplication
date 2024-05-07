@@ -15,9 +15,7 @@ export default struct ItemBudgetAndIncome {
           .onChange((text:boolean)=>{
             //选择类型
             this.isIncome = false
-            Prompt.showToast({
-              message:this.isIncome.toString()+'收入',
-            })
+
           })
         Text('收入')
       }
@@ -30,9 +28,7 @@ export default struct ItemBudgetAndIncome {
           .onChange((value:boolean)=>{
             //选择类型
             this.isIncome = true
-            Prompt.showToast({
-              message:this.isIncome.toString()+'支出',
-            })
+
           })
         Text('支出')
       }
