@@ -11,6 +11,16 @@ class DateUtil{
     return `${year}/${m}/${d}`
   }
 
+  formatDateMonth(num: number): string{
+    let date = new Date(num)
+    let year = date.getFullYear()
+    let month = date.getMonth()+1
+    let day = date.getDate()
+    let m = month < 10 ? '0' + month : month
+    let d = day < 10 ? '0' + day : day
+    return `${year}/${m}`
+  }
+
   formatDateMore(num:number):string{
     let date = new Date(num)
     let year = date.getFullYear()
@@ -114,3 +124,4 @@ class DateUtil{
 let dateUtil = new DateUtil()
 
 export default dateUtil as DateUtil
+

@@ -1,16 +1,18 @@
-import router from '@ohos.router'
 import BillService from '../../services/BillService'
 import Bill from '../../viewmodel/Bill'
 import BudgetList from './BudgetList'
-import Header from './Header'
 import Middle from './Middle'
 
 
 @Component
 export default struct HistoricalBilling {
   @Provide selectedType: string = ''; // 中央管理状态
-  @Prop @Watch('aboutToAppear') currentIndex:number
+  @Consume @Watch('aboutToAppear') currentIndex:number
   @Provide bills:Bill[] = []
+  @Provide newMonth:string=''
+  @Provide sumIncome:number = 0
+  @Provide sumExpenditure:number = 0
+  @Provide counter:number = 0
   // scanSelectedType(){
   //   console.log('testTag','HistoricalBilling','selectedType',this.selectedType)
   // }
@@ -27,19 +29,55 @@ export default struct HistoricalBilling {
     this.bills = await BillService.list()
   }
 
-  //过滤方法
-  filterData():Bill[] {
-    let res = true
-    console.log('testTag', 'BudgetList', 'bills', this.bills)
+  // //过滤方法
+  // filterData():Bill[] {
+  //   let selectedDate = AppStorage.Get('selectedDate')
+  //   // console.log('HistoricalBilling','selectedDate',this.newMonth)
+  //   let res = true
+  //   console.log('testTag', 'BudgetList', 'bills', this.bills)
+  //   return this.bills.filter((item: Bill) => {
+  //     if (this.selectedType == '收入') {
+  //       res = !item.isExpend
+  //     }
+  //     if (this.selectedType == '支出') {
+  //       res = item.isExpend
+  //     }
+  //     console.log('testTag', 'BudgetList', 'res', res)
+  //     return res
+  //   });
+  // }
+
+  filterData(): Bill[] {
+    // 转换 newMonth 为 Date 对象
+    let selectedDate: Date | null = null;
+    if (this.newMonth) {
+      selectedDate = new Date(this.newMonth);
+    }
+
     return this.bills.filter((item: Bill) => {
-      if (this.selectedType == '收入') {
-        res = !item.isExpend
+      if (selectedDate) {
+        const itemDate = new Date(item.date); // 假设 Bill 有日期字段
+
+        // 比较日期，确保年份、月份、日都相同
+        const sameDate = (
+          itemDate.getFullYear() === selectedDate.getFullYear() &&
+            itemDate.getMonth() === selectedDate.getMonth() &&
+            itemDate.getDate() === selectedDate.getDate()
+        );
+
+        if (!sameDate) {
+          return false; // 如果日期不匹配，过滤掉
+        }
       }
-      if (this.selectedType == '支出') {
-        res = item.isExpend
+
+      // 根据收入/支出类型筛选
+      if (this.selectedType === '收入') {
+        return !item.isExpend; // 只保留收入
+      } else if (this.selectedType === '支出') {
+        return item.isExpend; // 只保留支出
       }
-      console.log('testTag', 'BudgetList', 'res', res)
-      return res
+
+      return true; // 如果未指定类型，返回所有符合日期的账单
     });
   }
 

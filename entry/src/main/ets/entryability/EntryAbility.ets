@@ -7,6 +7,10 @@ import DbUtil from '../common/utils/DbUtil';
 import billModel from '../model/BillModel';
 import billTypeModel from '../model/BillTypeModel';
 import accessibility from '@ohos.accessibility';
+import PreferenceUtil from '../common/utils/PreferenceUtil';
+// 首选项变量
+let QuickBookkeeping:boolean
+let AutomaticBookkeeping:boolean
 
 export default class EntryAbility extends UIAbility {
   async onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): Promise<void> {
@@ -24,11 +28,13 @@ export default class EntryAbility extends UIAbility {
       console.log('testTag','EntryAbility','账单分组初始化成功！')
     })
 
-    // 创建持久化任务
-    // 查看是否启用无障碍功能
-    accessibility.on('accessibilityStateChange',(data)=>{
-      console.log('testTag','EntryAbility','data',JSON.stringify(data))
-    })
+
+
+    // // 创建持久化任务
+    // // 查看是否启用无障碍功能
+    // accessibility.on('accessibilityStateChange',(data)=>{
+    //   console.log('testTag','EntryAbility','data',JSON.stringify(data))
+    // })
 
 
 
@@ -39,17 +45,42 @@ export default class EntryAbility extends UIAbility {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
   }
 
-  onWindowStageCreate(windowStage: window.WindowStage): void {
+  async onWindowStageCreate(windowStage: window.WindowStage): Promise<void> {
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
-    windowStage.loadContent('pages/Welcome', (err, data) => {
-      if (err.code) {
-        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
-        return;
+    // 加载首选项
+    PreferenceUtil.loadPreference(this.context,'setting').then(async ()=>{
+      console.log('testTag','EntryAbility','加载设置首选项成功')
+      QuickBookkeeping = await PreferenceUtil.getPreferenceValue('QuickBookkeeping',false,'setting') as boolean
+      AutomaticBookkeeping = await PreferenceUtil.getPreferenceValue('AutomaticBookkeeping',false,'setting') as boolean
+
+      // 无法获取到首选项的值bug 2024年5月7日12:07:30
+      console.log('testTag','EntryAbility','QuickBookkeeping',QuickBookkeeping)
+      // 如果打开了快速记账则直接进入到记账界面
+      if (QuickBookkeeping){
+        // 直接进入到记账界面
+        windowStage.loadContent('pages/Index', (err, data) => {
+          if (err.code) {
+            hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
+            return;
+          }
+          hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');
+        });
+      } else {
+        windowStage.loadContent('pages/Welcome', (err, data) => {
+          if (err.code) {
+            hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
+            return;
+          }
+          hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');
+        });
       }
-      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');
-    });
+
+    })
+
+    // 获取首选项
+
   }
 
   onWindowStageDestroy(): void {

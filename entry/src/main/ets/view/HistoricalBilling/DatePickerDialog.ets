@@ -5,14 +5,16 @@ import { CommonConstants } from '../../common/constants/CommonConstants'
 export default struct DatePickerDialog {
   controller:CustomDialogController
   selectedDate:Date = new Date()
+  onDateSelected: (selectedDate: Date) => void; // 添加回调函数参数
   build() {
     Column(){
       // 1.日期选择器
       DatePicker({
-        start: new Date('2020-01-01'),
+        start: new Date('2020-01'),
         end: new Date(),
-        selected:this.selectedDate
+        selected:new Date()
       })
+
         .onChange((value:DatePickerResult)=>{
           this.selectedDate.setFullYear(value.year,value.month,value.day)
         })
@@ -36,7 +38,11 @@ export default struct DatePickerDialog {
             // 2.AppStorage也有状态管理的功能
             AppStorage.SetOrCreate('selectedDate',this.selectedDate.getTime())
             // 3.关闭窗口
-            this.controller.close()
+            this.controller.close();
+            // 调用回调函数
+            if (this.onDateSelected) {
+              this.onDateSelected(this.selectedDate); // 将选定日期传递给回调
+            }
           })
       }
     }

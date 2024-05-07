@@ -116,8 +116,24 @@ class BillService{
     return BillModel.list()
   }
 
+  /**
+   * 根据 ID 删除账单
+   * @param id
+   * @returns
+   */
+  async delete(id: number): Promise<void> {
+    try {
+      // 从 BillModel 中删除账单
+      await BillModel.deleteById(id);
+    } catch (error) {
+      console.error("Error deleting bill:", error);
+      throw error;
+    }
+  }
+
 
 }
 
 let billService = new BillService()
 export default billService as BillService
+
