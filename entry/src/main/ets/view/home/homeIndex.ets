@@ -15,7 +15,7 @@ import BillService from '../../services/BillService'
 @Component
 export default struct homeIndex {
   @Consume @Watch('aboutToAppear') Refresh:boolean
-
+  @Consume @Watch('aboutToAppear') currentIndex:number
   @State @Watch('aboutToAppear') isPanelShow:boolean = false
 
   @Provide groupId:number = 0

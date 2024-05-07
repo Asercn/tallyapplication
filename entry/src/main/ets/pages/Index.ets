@@ -1,11 +1,12 @@
 import router from '@ohos.router';
 import HistoricalBilling from '../view/HistoricalBilling/HistoricalBilling';
 import homeIndex from '../view/home/homeIndex';
+import ItemIndex from './ItemIndex';
 
 @Entry
 @Component
 struct Index {
-  @State currentIndex:number = 0
+  @Provide currentIndex:number = 0
 
   titleFont:number = 30
   @Provide Refresh:boolean = false
