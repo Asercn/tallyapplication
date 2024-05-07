@@ -67,7 +67,7 @@ struct Index {
         // 我的页面
         MinePage()
       }
-      .tabBar(this.TabBuilder('我的',3,$r('app.media.financial_select'),$r('app.media.financial')))
+      .tabBar(this.TabBuilder('我的',3,$r('app.media.my_select'),$r('app.media.my')))
 
     }
     .animationDuration(100)
