@@ -18,7 +18,7 @@ export default struct HistoricalBilling {
 
 
   // @Consume @Watch('aboutToAppear') count:number
-  @StorageLink('historical') @Watch('aboutToAppear') count:number = 0
+  // @StorageLink('historical') @Watch('aboutToAppear') count:number = 0
 
   // scanSelectedType(){
   //   console.log('testTag','HistoricalBilling','selectedType',this.selectedType)
