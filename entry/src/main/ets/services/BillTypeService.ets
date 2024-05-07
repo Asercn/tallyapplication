@@ -68,7 +68,6 @@ class BillTypeService{
   }
 
 
-
   getBillType(){
     return BillTypeModel.list()
   }
