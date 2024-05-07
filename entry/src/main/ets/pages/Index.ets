@@ -1,6 +1,8 @@
 import router from '@ohos.router';
 import HistoricalBilling from '../view/HistoricalBilling/HistoricalBilling';
 import homeIndex from '../view/home/homeIndex';
+import ItemIndex from './ItemIndex';
+import MinePage from './setting/MinePage';
 
 @Entry
 @Component
@@ -39,6 +41,13 @@ struct Index {
         ItemIndex()
       }
       .tabBar(this.TabBuilder('财务管理',2,$r('app.media.financial_select'),$r('app.media.financial')))
+
+      TabContent(){
+        // 我的页面
+        MinePage()
+      }
+      .tabBar(this.TabBuilder('我的',3,$r('app.media.financial_select'),$r('app.media.financial')))
+
     }
     .animationDuration(100)
     .scrollable(false)
