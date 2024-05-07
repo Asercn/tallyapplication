@@ -2,7 +2,6 @@ import router from '@ohos.router';
 import HistoricalBilling from '../view/HistoricalBilling/HistoricalBilling';
 import homeIndex from '../view/home/homeIndex';
 import ItemIndex from './ItemIndex';
-import ItemIndex from './ItemIndex';
 import MinePage from './setting/MinePage';
 
 @Entry
