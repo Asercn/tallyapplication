@@ -8,15 +8,16 @@ export default struct MinePage {
   build() {
     Row(){
       Column(){
-        Row(){
-          Image($r('app.media.ic_public_back'))
-            .width(20)
-          Blank()
-          Image($r('app.media.count'))
-            .width(20)
-        }
-        .width('100%')
-        .justifyContent(FlexAlign.SpaceBetween)
+        // 2024年5月8日01:58:59陈显洪修改，感觉不好看，去掉了
+        // Row(){
+        //   Image($r('app.media.ic_public_back'))
+        //     .width(20)
+        //   Blank()
+        //   Image($r('app.media.count'))
+        //     .width(20)
+        // }
+        // .width('100%')
+        // .justifyContent(FlexAlign.SpaceBetween)
         //用户描述
         MineUser()
         //列表
@@ -35,13 +36,12 @@ export default struct MinePage {
             //跳转
             router.pushUrl({
               url:'pages/Index'
-            }).catch((error:Error)=>{
+            },router.RouterMode.Single).catch((error:Error)=>{
             //异常处理
             })
           })
       }
       .width('100%')
-      .margin('10vp')
       .padding('10vp')
       .height('100%')
     }

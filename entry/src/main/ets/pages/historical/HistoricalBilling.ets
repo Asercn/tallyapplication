@@ -1,15 +1,17 @@
 import DateUtil from '../../common/utils/DateUtil'
 import BillModel from '../../model/BillModel'
 import BillService from '../../services/BillService'
+import BudgetList from '../../view/HistoricalBilling/BudgetList'
+import Header from '../../view/HistoricalBilling/Header'
+import Middle from '../../view/HistoricalBilling/Middle'
 import Bill from '../../viewmodel/Bill'
-import BudgetList from './BudgetList'
-import Middle from './Middle'
 
 
+@Entry
 @Component
 export default struct HistoricalBilling {
   @Provide selectedType: string = '全部账单'; // 中央管理状态
-  @Consume @Watch('aboutToAppear') currentIndex:number
+  // @Consume @Watch('aboutToAppear') currentIndex:number
   @Provide bills:Bill[] = []  // 总数据
   @Provide InCome:Bill[] = []  // 收入数据
   @Provide Expenditure:Bill[] = []  // 支出数据
@@ -27,7 +29,7 @@ export default struct HistoricalBilling {
     AppStorage.SetOrCreate('selectedDate',new Date().getTime())
     this.initValue()
     // 过滤数据
-    console.log('testTag','HistorB','currentIndex',this.currentIndex)
+    // console.log('testTag','HistorB','currentIndex',this.currentIndex)
   }
 
   initValue(){
@@ -74,7 +76,7 @@ export default struct HistoricalBilling {
   build() {
     Column({space:15}){
       //1.头部
-      //Header()
+      Header()
       //中间
       Middle()
       // Middle({ selectedType: this.selectedType })
