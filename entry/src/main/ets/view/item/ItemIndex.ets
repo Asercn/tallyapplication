@@ -36,16 +36,22 @@ export default struct ItemIndex {
   // @StorageLink('historical') @Watch('aboutToAppear') count:number = 0
 
   //接收今日消费页面数据的数据的数组
-  @State todayBillArr:Bill[] = [] //当日的消费数据
-  @State billArr:Bill[] = []  //本月的消费数据
+  @Provide yearBillArr:Bill[] = [] //本年的消费数据
+  @Provide billArr:Bill[] = []  //本月的消费数据
+  @Provide DayBillArr:Bill[] = []  //今日的消费数据
 
   @State taskId:number = setTimeout(this.handleBillArr,1000)//标识定时计数器
 
 
   async aboutToAppear(){
-    this.todayBillArr = await BillService.getBill() //获取当日的账单数据
+    AppStorage.SetOrCreate('historical',this.count) //创建全局状态存储用于监听
     //获取当天时间
     let date = new Date()
+
+    this.DayBillArr = await BillService.listByDateBetween(new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+      new Date(date.getFullYear(),date.getMonth(), date.getDate()+1)) //获取今日的账单数据
+    this.yearBillArr = await BillService.list() //获取本年的账单数据
+
     //1.获取本月所有消费数据
     this.billArr = await BillService.listByDateBetween(new Date(
       date.getFullYear(), date.getMonth(), 1),
@@ -142,7 +148,7 @@ export default struct ItemIndex {
       Image($r('app.media.ic_public_add_norm_filled'))
         .fillColor($r('app.color.primary_color'))
         .width(70)
-        .position({x:260,y:650})
+        .position({x:300,y:600})
         .onClick(()=>{
           //点击后跳转
           this.showPanel = true

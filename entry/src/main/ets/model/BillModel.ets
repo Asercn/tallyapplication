@@ -83,7 +83,8 @@ class BillModel{
   listByDate(date:number):Promise<Bill[]>{
     //1.查询条件
     let predicates = new relationalStore.RdbPredicates(TABLE_NAME)
-    predicates.equalTo('date',date)
+    // predicates.equalTo('date',date) //获取今日的日期
+    predicates.equalTo('date',date) //获取今日的日期
     return DbUtil.queryForList(predicates,COLUMNS);
 
   }
