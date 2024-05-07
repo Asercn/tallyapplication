@@ -15,10 +15,16 @@ export default struct HistoricalBilling {
   @Provide sumIncome:number = 0
   @Provide sumExpenditure:number = 0
   @Provide counter:number = 0
+
+
+  // @Consume @Watch('aboutToAppear') count:number
+  // @StorageLink('historical') @Watch('aboutToAppear') count:number = 0
+
   // scanSelectedType(){
   //   console.log('testTag','HistoricalBilling','selectedType',this.selectedType)
   // }
   aboutToAppear(){
+
     this.getBills()
     this.filterData()
     console.log('testTag','HistorB','currentIndex')

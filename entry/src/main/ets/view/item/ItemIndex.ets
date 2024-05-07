@@ -33,6 +33,7 @@ export default struct ItemIndex {
 
   @Consume @Watch('aboutToAppear') currentIndex:number
   @Provide @Watch('aboutToAppear') count:number = 0
+  // @StorageLink('historical') @Watch('aboutToAppear') count:number = 0
 
   //接收今日消费页面数据的数据的数组
   @State todayBillArr:Bill[] = [] //当日的消费数据

@@ -145,6 +145,7 @@ export default struct ItemChart {
   @Consume budget:number //预算
   @Consume count:number
 
+
   //开启弹窗
   controller:CustomDialogController = new CustomDialogController({
     // builder:CustomDialogChart({}),
@@ -180,7 +181,9 @@ export default struct ItemChart {
       }
       .ColumnStyle()
       .onClick(()=>{
+        // AppStorage.SetOrCreate('historical',this.count)
         router.pushUrl({url:"pages/historical/HistoricalBilling"})
+
       })
 
       //3.预算剩余
