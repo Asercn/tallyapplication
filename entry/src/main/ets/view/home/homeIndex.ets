@@ -1,10 +1,7 @@
-
-import colorUtil from '../../common/utils/ColorUtil'
 import DateUtil from '../../common/utils/DateUtil'
 import Bill from '../../viewmodel/Bill'
 import BillType from '../../viewmodel/BillType'
 import GroupInfo from '../../viewmodel/GroupInfo'
-import addBillPanel from '../../pages/home/addBillPanel'
 import addBillTypePanel from './addBillTypePanel'
 import allBillCard from './AllBillCard'
 import detailsBillCard from './detailsBillCard'
@@ -19,8 +16,6 @@ export default struct homeIndex {
   @State @Watch('aboutToAppear') isPanelShow:boolean = false
 
   @Provide groupId:number = 0
-
-
   @Provide total:number = 0
   @Provide sumValue:number = 0
   @Provide income:number = 0
