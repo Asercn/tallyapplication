@@ -1,3 +1,5 @@
+import DateUtil from '../../common/utils/DateUtil'
+import BillModel from '../../model/BillModel'
 import BillService from '../../services/BillService'
 import Bill from '../../viewmodel/Bill'
 import BudgetList from './BudgetList'
@@ -6,80 +8,67 @@ import Middle from './Middle'
 
 @Component
 export default struct HistoricalBilling {
-  @Provide selectedType: string = ''; // 中央管理状态
+  @Provide selectedType: string = '全部账单'; // 中央管理状态
   @Consume @Watch('aboutToAppear') currentIndex:number
-  @Provide bills:Bill[] = []
-  @Provide newMonth:string=''
+  @Provide bills:Bill[] = []  // 总数据
+  @Provide InCome:Bill[] = []  // 收入数据
+  @Provide Expenditure:Bill[] = []  // 支出数据
+  @Provide @Watch('initValue') counter:number = 0
+
+
+
   @Provide sumIncome:number = 0
   @Provide sumExpenditure:number = 0
-  @Provide counter:number = 0
-  // scanSelectedType(){
-  //   console.log('testTag','HistoricalBilling','selectedType',this.selectedType)
-  // }
+  @Provide newMonth:string=''
+
+
   aboutToAppear(){
-    this.getBills()
-    this.filterData()
+    // 初始化时间
+    AppStorage.SetOrCreate('selectedDate',new Date().getTime())
+    this.initValue()
+    // 过滤数据
     console.log('testTag','HistorB','currentIndex',this.currentIndex)
   }
-  setSelectedType(){
-    this.selectedType = '全部账单'
+
+  initValue(){
+    // 获取所有数据
+    this.getBills().then(rep=>{
+      // 获取两个分组的数据
+      this.getIE().then(rep=>{
+        // 获取两个分组的总支出和预算
+        let income = 0
+        let expenditure = 0
+        this.InCome.forEach(bill=> {
+          income += bill.amount
+          console.log('testTag','HistoricalBilling','income',income)
+        })
+        this.Expenditure.forEach(bill=> {
+          expenditure += bill.amount
+          console.log('testTag','HistoricalBilling','expenditure',expenditure)
+        })
+        this.sumIncome = income
+        this.sumExpenditure = expenditure
+      })
+
+    })
+    //   .then(rep=>{
+    //   // this.filterData()
+    // })
   }
+
+  async getIE(){
+    this.InCome = await this.bills.filter(bill=>!bill.isExpend)
+    this.Expenditure = await this.bills.filter(bill=>bill.isExpend)
+  }
+
   // 获取到所有的bill数据方法
   async getBills(){
-    this.bills = await BillService.list()
+    console.log('testTag','HistoricalBilling','selectedDate',AppStorage.Get('selectedDate'))
+    let day = DateUtil.getTodayRange(new Date(AppStorage.Get('selectedDate')))
+    this.bills = await BillModel.listByDateBetween(day.start,day.end)
+    console.log('testTag','HistoricalBilling','bills',JSON.stringify(this.bills))
   }
 
-  // //过滤方法
-  // filterData():Bill[] {
-  //   let selectedDate = AppStorage.Get('selectedDate')
-  //   // console.log('HistoricalBilling','selectedDate',this.newMonth)
-  //   let res = true
-  //   console.log('testTag', 'BudgetList', 'bills', this.bills)
-  //   return this.bills.filter((item: Bill) => {
-  //     if (this.selectedType == '收入') {
-  //       res = !item.isExpend
-  //     }
-  //     if (this.selectedType == '支出') {
-  //       res = item.isExpend
-  //     }
-  //     console.log('testTag', 'BudgetList', 'res', res)
-  //     return res
-  //   });
-  // }
-
-  filterData(): Bill[] {
-    // 转换 newMonth 为 Date 对象
-    let selectedDate: Date | null = null;
-    if (this.newMonth) {
-      selectedDate = new Date(this.newMonth);
-    }
-
-    return this.bills.filter((item: Bill) => {
-      if (selectedDate) {
-        const itemDate = new Date(item.date); // 假设 Bill 有日期字段
-
-        // 比较日期，确保年份、月份、日都相同
-        const sameDate = (
-          itemDate.getFullYear() === selectedDate.getFullYear() &&
-            itemDate.getMonth() === selectedDate.getMonth() &&
-            itemDate.getDate() === selectedDate.getDate()
-        );
-
-        if (!sameDate) {
-          return false; // 如果日期不匹配，过滤掉
-        }
-      }
-
-      // 根据收入/支出类型筛选
-      if (this.selectedType === '收入') {
-        return !item.isExpend; // 只保留收入
-      } else if (this.selectedType === '支出') {
-        return item.isExpend; // 只保留支出
-      }
-
-      return true; // 如果未指定类型，返回所有符合日期的账单
-    });
-  }
 
 
   build() {
@@ -90,9 +79,10 @@ export default struct HistoricalBilling {
       Middle()
       // Middle({ selectedType: this.selectedType })
       // 3.记录列表
-      BudgetList({filterData:this.filterData.bind(this)})
+      BudgetList()
       // BudgetList({ selectedType: this.selectedType })
     }
+    .padding(10)
     .width('100%')
     .height('100%')
   }

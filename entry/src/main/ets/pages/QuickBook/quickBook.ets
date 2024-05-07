@@ -90,7 +90,7 @@ aboutToAppear(){
         Row(){
           Column({space:10}){
             Row(){
-              Text('日期/时间:')
+              Text('日期/时间')
                 .textAlign(TextAlign.End)
                 .width('25%')
               Text(DateUtil.formatDateMore(this.date))
@@ -146,25 +146,33 @@ aboutToAppear(){
 
         // 类型选择
         Row(){
-          Text('类型选择  ')
-          Image(BillTypeImages[this.typeId].typeName)
-            .width(30)
-          Select([
-            {value:BillTypeNames[0].typeName,icon:BillTypeImages[0].typeName},
-            {value:BillTypeNames[1].typeName,icon:BillTypeImages[1].typeName},
-            {value:BillTypeNames[2].typeName,icon:BillTypeImages[2].typeName},
-            {value:BillTypeNames[3].typeName,icon:BillTypeImages[3].typeName},
-            {value:BillTypeNames[4].typeName,icon:BillTypeImages[4].typeName},
-            {value:BillTypeNames[5].typeName,icon:BillTypeImages[5].typeName},
-            {value:BillTypeNames[6].typeName,icon:BillTypeImages[6].typeName}
-          ])
-            .selected(6) //默认选择的下标
-            .value('其它')
-            .onSelect((index?: number,value?:string) => {
-              console.info('Select:' + index)
-              this.typeId = index;
-            })
+          Text('类型选择')
+            .width('25%')
+            .textAlign(TextAlign.End)
+
+          Row(){
+            Image(BillTypeImages[this.typeId].typeName)
+              .width(30)
+            Select([
+              {value:BillTypeNames[0].typeName,icon:BillTypeImages[0].typeName},
+              {value:BillTypeNames[1].typeName,icon:BillTypeImages[1].typeName},
+              {value:BillTypeNames[2].typeName,icon:BillTypeImages[2].typeName},
+              {value:BillTypeNames[3].typeName,icon:BillTypeImages[3].typeName},
+              {value:BillTypeNames[4].typeName,icon:BillTypeImages[4].typeName},
+              {value:BillTypeNames[5].typeName,icon:BillTypeImages[5].typeName},
+              {value:BillTypeNames[6].typeName,icon:BillTypeImages[6].typeName}
+            ])
+              .selected(6) //默认选择的下标
+              .value('其它')
+              .onSelect((index?: number,value?:string) => {
+                console.info('Select:' + index)
+                this.typeId = index;
+              })
+          }
+          .width('75%')
+          .justifyContent(FlexAlign.Center)
         }
+        .width('100%')
 
         Row({space:20}){
           Button('提交')
