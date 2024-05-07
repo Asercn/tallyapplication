@@ -38,7 +38,7 @@ export default struct Middle{
         Row(){
           Column(){
             Radio({value:'全部账单',group:'账单'})
-              .checked(false)
+              .checked(true)
               .onChange((flag) => {
                 this.counter++
                 if (flag) {

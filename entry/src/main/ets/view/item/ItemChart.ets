@@ -180,7 +180,7 @@ export default struct ItemChart {
       }
       .ColumnStyle()
       .onClick(()=>{
-        router.pushUrl({url:"pages/HistoricalBilling"})
+        router.pushUrl({url:"pages/historical/HistoricalBilling"})
       })
 
       //3.预算剩余

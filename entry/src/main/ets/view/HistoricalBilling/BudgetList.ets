@@ -11,7 +11,7 @@ function grayText() {
 
 @Component
 export default struct BudgetList {
-  @Consume @Watch('updateFilteredArr') currentIndex:number
+  // @Consume @Watch('updateFilteredArr') currentIndex:number
   updateFilteredArr() {
     //console.log('updateFilteredArr','Budget')
     this.filteredArr = this.filterData(); // 在组件外部过滤数据
@@ -116,20 +116,34 @@ export default struct BudgetList {
                   }.alignItems(HorizontalAlign.Start)
                   Blank()
                   Column({space:5}){
+                    //金额
                     if (item.isExpend) {
-                      Text(`${item.amount}元`).fontSize(18)
-                        .fontColor(Color.Gray)
-                      Text('支出')
-                        .fontColor(Color.Gray)
-                        .fontSize(12)
-
-                    } else {
-                      Text(`${item.amount}元`).fontSize(18)
-                        .fontColor($r('app.color.primary_color'))
-                      Text('收入')
-                        .fontColor($r('app.color.contrast_primary_color'))
-                        .fontSize(12)
+                      Column(){
+                        Text(`-${item.amount}￥`)
+                          .fontColor(Color.Red)
+                        Text(item.label)
+                      }
+                    }else {
+                      Column(){
+                        Text(`${item.amount}￥`)
+                          .fontColor(Color.Green)
+                        Text(item.label)
+                      }
                     }
+                    // if (item.isExpend) {
+                    //   Text(`${item.amount}元`).fontSize(18)
+                    //     .fontColor(Color.Gray)
+                    //   Text('支出')
+                    //     .fontColor(Color.Gray)
+                    //     .fontSize(12)
+                    //
+                    // } else {
+                    //   Text(`${item.amount}元`).fontSize(18)
+                    //     .fontColor($r('app.color.primary_color'))
+                    //   Text('收入')
+                    //     .fontColor($r('app.color.contrast_primary_color'))
+                    //     .fontSize(12)
+                    // }
                   }
                 }
                 .padding(5)

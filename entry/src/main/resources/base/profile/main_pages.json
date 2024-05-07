@@ -5,6 +5,7 @@
     "pages/home/addBillPanel",
     "pages/setting/setting",
     "pages/setting/Personal_Information",
-    "pages/setting/MinePage"
+    "pages/setting/MinePage",
+    "pages/historical/HistoricalBilling"
   ]
 }

@@ -1,17 +1,16 @@
-import BillService from '../services/BillService'
-import ItemBudget from '../view/item/ItemBudget'
-import ItemBudgetAndIncome from '../view/item/ItemBudgetAndIncome'
-import ItemChart from '../view/item/ItemChart'
-import ItemConsumeType from '../view/item/ItemConsumeType'
-import ItemList from '../view/item/ItemList'
-import ItemShow from '../view/item/ItemShow'
-import NumberKeyboard from '../view/item/NumberKeyboard'
-import Bill from '../viewmodel/Bill'
+import BillService from '../../services/BillService'
+import ItemBudget from './ItemBudget'
+import ItemBudgetAndIncome from './ItemBudgetAndIncome'
+import ItemChart from './ItemChart'
+import ItemConsumeType from './ItemConsumeType'
+import ItemList from './ItemList'
+import ItemShow from './ItemShow'
+import NumberKeyboard from './NumberKeyboard'
+import Bill from '../../viewmodel/Bill'
 import Prompt from '@system.prompt'
-import DateUtil from '../common/utils/DateUtil'
+import DateUtil from '../../common/utils/DateUtil'
 
 // import { Calendar } from '@ohos.util.';
-
 
 
 @Component

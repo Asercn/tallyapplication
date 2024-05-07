@@ -1,13 +1,15 @@
 import BillService from '../../services/BillService'
 import Bill from '../../viewmodel/Bill'
-import BudgetList from './BudgetList'
-import Middle from './Middle'
+import BudgetList from '../../view/HistoricalBilling/BudgetList'
+import Middle from '../../view/HistoricalBilling/Middle'
+import router from '@ohos.router'
 
 
+@Entry
 @Component
 export default struct HistoricalBilling {
   @Provide selectedType: string = ''; // 中央管理状态
-  @Consume @Watch('aboutToAppear') currentIndex:number
+  // @Consume @Watch('aboutToAppear') currentIndex:number
   @Provide bills:Bill[] = []
   @Provide newMonth:string=''
   @Provide sumIncome:number = 0
@@ -19,7 +21,8 @@ export default struct HistoricalBilling {
   aboutToAppear(){
     this.getBills()
     this.filterData()
-    console.log('testTag','HistorB','currentIndex',this.currentIndex)
+    console.log('testTag','HistorB','currentIndex')
+    // console.log('testTag','HistorB','currentIndex',this.currentIndex)
   }
   setSelectedType(){
     this.selectedType = '全部账单'
@@ -28,24 +31,6 @@ export default struct HistoricalBilling {
   async getBills(){
     this.bills = await BillService.list()
   }
-
-  // //过滤方法
-  // filterData():Bill[] {
-  //   let selectedDate = AppStorage.Get('selectedDate')
-  //   // console.log('HistoricalBilling','selectedDate',this.newMonth)
-  //   let res = true
-  //   console.log('testTag', 'BudgetList', 'bills', this.bills)
-  //   return this.bills.filter((item: Bill) => {
-  //     if (this.selectedType == '收入') {
-  //       res = !item.isExpend
-  //     }
-  //     if (this.selectedType == '支出') {
-  //       res = item.isExpend
-  //     }
-  //     console.log('testTag', 'BudgetList', 'res', res)
-  //     return res
-  //   });
-  // }
 
   filterData(): Bill[] {
     // 转换 newMonth 为 Date 对象
@@ -85,7 +70,7 @@ export default struct HistoricalBilling {
   build() {
     Column({space:15}){
       //1.头部
-      //Header()
+      this.Header()
       //中间
       Middle()
       // Middle({ selectedType: this.selectedType })
@@ -96,5 +81,22 @@ export default struct HistoricalBilling {
     .width('100%')
     .height('100%')
   }
-}
 
+  //头部显示
+  @Builder Header(){
+    Row(){
+      Image($r('app.media.ic_public_back'))
+        .width(20)
+        .onClick(()=>{
+          router.back()
+        })
+
+      Blank()
+
+      Text('历史账单')
+
+    }
+    .width('90%')
+    .margin(5)
+  }
+}

@@ -1,7 +1,7 @@
 import router from '@ohos.router';
-import HistoricalBilling from '../view/HistoricalBilling/HistoricalBilling';
+import HistoricalBilling from './historical/HistoricalBilling';
 import homeIndex from '../view/home/homeIndex';
-import ItemIndex from './ItemIndex';
+import ItemIndex from '../view/item/ItemIndex';
 import MinePage from './setting/MinePage';
 
 @Entry
@@ -31,26 +31,18 @@ struct Index {
       }
       .tabBar(this.TabBuilder('首页',0,$r('app.media.home_select'),$r('app.media.home')))
 
-      TabContent(){
-        // 账单记录页面
-        Column(){
-          // Image($r('app.media.ic_public_add_norm_filled'))
-          //   .fillColor($r('app.color.primary_color'))
-          //   .width(70)
-          //   .position({x:260,y:650})
-          //   .onClick(()=>{
-          //     //点击后跳转
-          //     this.showPanel = true
-          //   })
-          this.header({title:'账单记录'})
-
-          HistoricalBilling()
-        }
-        .width('100%')
-        .height('100%')
-
-      }
-      .tabBar(this.TabBuilder('账单记录',1,$r('app.media.historicalBill_select'),$r('app.media.historicalBill')))
+      // TabContent(){
+      //   // 账单记录页面
+      //   Column(){
+      //     this.header({title:'账单记录'})
+      //
+      //     HistoricalBilling()
+      //   }
+      //   .width('100%')
+      //   .height('100%')
+      //
+      // }
+      // .tabBar(this.TabBuilder('账单记录',1,$r('app.media.historicalBill_select'),$r('app.media.historicalBill')))
       TabContent(){
         Column({space:10}){
           this.header({title:'财务管理'})
@@ -61,13 +53,13 @@ struct Index {
         .height('100%')
 
       }
-      .tabBar(this.TabBuilder('财务管理',2,$r('app.media.financial_select'),$r('app.media.financial')))
+      .tabBar(this.TabBuilder('财务管理',1,$r('app.media.financial_select'),$r('app.media.financial')))
 
       TabContent(){
         // 我的页面
         MinePage()
       }
-      .tabBar(this.TabBuilder('我的',3,$r('app.media.financial_select'),$r('app.media.financial')))
+      .tabBar(this.TabBuilder('我的',2,$r('app.media.financial_select'),$r('app.media.financial')))
 
     }
     .animationDuration(100)
