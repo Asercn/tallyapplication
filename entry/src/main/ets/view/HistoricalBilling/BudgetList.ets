@@ -1,4 +1,5 @@
 import DateUtil from '../../common/utils/DateUtil';
+import { BillTypeImages } from '../../model/BillTypeModels';
 import BillService from '../../services/BillService';
 import Bill from '../../viewmodel/Bill';
 
@@ -23,36 +24,43 @@ export default struct BudgetList {
         List() {
           ForEach(this.selectedType=='支出'?this.InCome:this.selectedType=='收入'?this.Expenditure:this.bills, (item:Bill) => {
             ListItem() {
-              Column() {
+              Row(){
                 Row(){
-                  Column({space:5}) {
-                    Text(item.label).fontSize(20)
-                    Text(` ${DateUtil.formatDateMore(item.date)}`).grayText() // 显示月份
-                  }.alignItems(HorizontalAlign.Start)
-                  Blank()
-                  Column({space:5}){
-                    if (item.isExpend) {
-                      Text(`${item.amount}元`).fontSize(18)
-                        .fontColor($r('app.color.primary_color'))
-                      Text('支出')
-                        .fontColor(Color.Gray)
-                        .fontSize(12)
+                  Image(BillTypeImages[item.typeId].typeName).width(40)
+                }
 
-                    } else {
-                      Text(`${item.amount}元`).fontSize(18)
-                        .fontColor($r('app.color.contrast_primary_color'))
-                      Text('收入')
-                        .fontColor(Color.Gray)
-                        .fontSize(12)
+                Column() {
+                  Row(){
+                    Column({space:5}) {
+                      Text(item.label).fontSize(20)
+                      Text(` ${DateUtil.formatDateMore(item.date)}`).grayText() // 显示月份
+                    }.alignItems(HorizontalAlign.Start)
+                    Blank()
+                    Column({space:5}){
+                      if (item.isExpend) {
+                        Text(`${item.amount}元`).fontSize(18)
+                          .fontColor($r('app.color.primary_color'))
+                        Text('支出')
+                          .fontColor(Color.Gray)
+                          .fontSize(12)
+
+                      } else {
+                        Text(`${item.amount}元`).fontSize(18)
+                          .fontColor($r('app.color.contrast_primary_color'))
+                        Text('收入')
+                          .fontColor(Color.Gray)
+                          .fontSize(12)
+                      }
                     }
                   }
+                  .padding(5)
+                  .width('100%')
+                  Divider().color('#cfcfcf').strokeWidth(1)
                 }
-                .padding(5)
-                .width('100%')
-                Divider().color('#cfcfcf').strokeWidth(1)
+                .layoutWeight(1)
+
               }
-              // .backgroundColor('red')
-              // Divider({strokeWidth:5,startMargin:20,endMargin:20,color:'#36d'})
+
             }
             .swipeAction({end: this.DeleteButton(item.id)}) // 右划删除
           }, (item) => item.id) // 确保ForEach的键是唯一的
