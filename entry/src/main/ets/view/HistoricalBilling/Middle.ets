@@ -1,10 +1,13 @@
-
 import DateUtil from '../../common/utils/DateUtil';
 import DatePickerDialog from './DatePickerDialog'
 
 @Component
 export default struct Middle{
   @Consume selectedType:string ; // 用于存储选择的类别
+  @Consume sumIncome:number
+  @Consume sumExpenditure:number
+  @Consume  counter:number
+  // @Consume newMonthL:string
 
   @StorageProp('selectedDate') selectedDate:number = DateUtil.beginTimeOfDay(new Date())
   controller:CustomDialogController = new CustomDialogController({
@@ -12,6 +15,8 @@ export default struct Middle{
       selectedDate:new Date(this.selectedDate)
     })  // 数据回显
   })
+
+
 
   build(){
     Column({space:15}){
@@ -21,9 +26,12 @@ export default struct Middle{
             Radio({value:'全部账单',group:'账单'})
               .checked(false)
               .onChange((flag) => {
+                this.counter++
                 if (flag) {
                   this.selectedType = '全部账单'
                   console.log('a','Middle',this.selectedType)
+                  // 点击按钮 触发方法
+                  // 使用计数器，当数值发生改变的时候，触发方法
                 }
               })
             Text('全部账单').fontSize(10).fontWeight(FontWeight.Bold)
@@ -58,13 +66,13 @@ export default struct Middle{
         Text(DateUtil.formatDate(this.selectedDate))
           .onClick(()=>this.controller.open())
         Row(){
-          Text(`支出￥${164}`).fontSize(10).fontWeight(FontWeight.Bold)
+          Text(`支出￥${this.sumExpenditure}`).fontSize(10).fontWeight(FontWeight.Bold)
         }
         Row(){
-          Text(`收入￥${1000}`).fontSize(10).fontWeight(FontWeight.Bold)
+          Text(`收入￥${this.sumIncome}`).fontSize(10).fontWeight(FontWeight.Bold)
         }
       }.justifyContent(FlexAlign.SpaceAround).width('98%')
-    }.width('98%')
+    }.width('98%').backgroundColor('#CFCFCF')
   }
 }
 

@@ -9,7 +9,7 @@ export default struct DatePickerDialog {
     Column(){
       // 1.日期选择器
       DatePicker({
-        start: new Date('2020-01-01'),
+        start: new Date('2020-01'),
         end: new Date(),
         selected:this.selectedDate
       })

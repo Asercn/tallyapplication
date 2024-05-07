@@ -1,16 +1,18 @@
-import router from '@ohos.router'
 import BillService from '../../services/BillService'
 import Bill from '../../viewmodel/Bill'
 import BudgetList from './BudgetList'
-import Header from './Header'
 import Middle from './Middle'
 
 
 @Component
 export default struct HistoricalBilling {
   @Provide selectedType: string = ''; // 中央管理状态
-  @Prop @Watch('aboutToAppear') currentIndex:number
+  @Consume @Watch('aboutToAppear') currentIndex:number
   @Provide bills:Bill[] = []
+  // @Provide newMonth:string=''
+  @Provide sumIncome:number = 0
+  @Provide sumExpenditure:number = 0
+  @Provide counter:number = 0
   // scanSelectedType(){
   //   console.log('testTag','HistoricalBilling','selectedType',this.selectedType)
   // }

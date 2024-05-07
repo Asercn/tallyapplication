@@ -5,7 +5,7 @@ import homeIndex from '../view/home/homeIndex';
 @Entry
 @Component
 struct Index {
-  @State currentIndex:number = 0
+  @Provide currentIndex:number = 0
 
   titleFont:number = 30
   @Provide Refresh:boolean = false
@@ -30,7 +30,13 @@ struct Index {
       .tabBar(this.TabBuilder('首页',0,$r('app.media.home_select'),$r('app.media.home')))
       TabContent(){
         // 账单记录页面
-        HistoricalBilling({currentIndex:this.currentIndex})
+        Column(){
+          this.header({title:'账单记录'})
+          HistoricalBilling()
+        }
+        .width('100%')
+        .height('100%')
+
       }
       .tabBar(this.TabBuilder('账单记录',1,$r('app.media.historicalBill_select'),$r('app.media.historicalBill')))
       TabContent(){
