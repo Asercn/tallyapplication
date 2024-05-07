@@ -6,6 +6,7 @@
     "pages/setting/setting",
     "pages/setting/Personal_Information",
     "pages/setting/MinePage",
+    "pages/QuickBook/quickBook",
     "pages/historical/HistoricalBilling"
   ]
 }

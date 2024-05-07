@@ -148,39 +148,6 @@ export default struct homeIndex {
       .layoutWeight(1)
     }
   }
-  // // 首页页脚 已经不用了
-  // @Builder footer(){
-  //   Row(){
-  //     Row({space:20}){
-  //       Button('历史账单')
-  //         .buttonStyle()
-  //         .onClick((event: ClickEvent) => {
-  //
-  //         })
-  //       Button('记一账')
-  //         .buttonStyle()
-  //         .onClick((event: ClickEvent) => {
-  //
-  //         })
-  //       Button('更多')
-  //         .buttonStyle()
-  //         .onClick((event: ClickEvent) => {
-  //
-  //         })
-  //
-  //     }
-  //     .justifyContent(FlexAlign.SpaceEvenly)
-  //     .backgroundColor($r('app.color.primary_color'))
-  //     .width('100%')
-  //     .height(80)
-  //     .shadow({radius:20})
-  //   }
-  //   .width('100%')
-  //   .height(100)
-  //   .backgroundColor($r('app.color.dark_primary_color'))
-  //   .alignItems(VerticalAlign.Bottom)
-  //   .shadow({radius:15})
-  // }
 
 
 }

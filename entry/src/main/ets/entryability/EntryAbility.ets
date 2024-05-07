@@ -60,7 +60,7 @@ export default class EntryAbility extends UIAbility {
       // 如果打开了快速记账则直接进入到记账界面
       if (QuickBookkeeping){
         // 直接进入到记账界面
-        windowStage.loadContent('pages/Index', (err, data) => {
+        windowStage.loadContent("pages/QuickBook/quickBook", (err, data) => {
           if (err.code) {
             hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
             return;
