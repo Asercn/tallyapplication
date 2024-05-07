@@ -1,22 +1,21 @@
 import preferences from '@ohos.data.preferences';
-import { CommonConstants } from '../constants/CommonConstants';
 import Logger from './Logger';
 
 class PreferenceUtil{
   private pref: preferences.Preferences
 
-  async loadPreference(context){
+  async loadPreference(context,preferencesName){
     try { // 加载preferences
-      this.pref = await preferences.getPreferences(context, CommonConstants.H_STORE)
-      Logger.debug(`加载Preferences[${CommonConstants.H_STORE}]成功`)
+      this.pref = await preferences.getPreferences(context, preferencesName)
+      Logger.debug(`加载Preferences[${preferencesName}]成功`)
     } catch (e) {
-      Logger.debug(`加载Preferences[${CommonConstants.H_STORE}]失败`, JSON.stringify(e))
+      Logger.debug(`加载Preferences[${preferencesName}]失败`, JSON.stringify(e))
     }
   }
 
-  async putPreferenceValue(key: string, value: preferences.ValueType){
+  async putPreferenceValue(key: string, value: preferences.ValueType, preferencesName:string){
     if (!this.pref) {
-      Logger.debug(`Preferences[${CommonConstants.H_STORE}]尚未初始化！`)
+      Logger.debug(`Preferences[${preferencesName}]尚未初始化！`)
       return
     }
     try {
@@ -30,9 +29,9 @@ class PreferenceUtil{
     }
   }
 
-  async getPreferenceValue(key: string, defaultValue: preferences.ValueType){
+  async getPreferenceValue(key: string, defaultValue: preferences.ValueType, preferencesName:string){
     if (!this.pref) {
-      Logger.debug(`Preferences[${CommonConstants.H_STORE}]尚未初始化！`)
+      Logger.debug(`Preferences[${preferencesName}]尚未初始化！`)
       return
     }
     try {
