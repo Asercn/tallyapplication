@@ -108,7 +108,7 @@ export default struct detailsBillCard {
               console.log('testTag','detailsBillCard','groupId',this.groupId)
               // 2.打开新增账单界面
               router.pushUrl({
-                url:"pages/home/addBillPanel",
+                url:"pages/QuickBook/quickBook",
                 params:{
                   groupId:this.groupId
                 }
