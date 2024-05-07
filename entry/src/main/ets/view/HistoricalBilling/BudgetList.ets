@@ -23,7 +23,7 @@ export default struct BudgetList {
   @Consume sumIncome:number
   @Consume sumExpenditure:number
   @Consume @Watch('getTotalAmount') counter:number
-  // @Consume newMonth:string
+  @Consume newMonth:string
 
   @State filteredArr: Array<any> = [];
 
@@ -105,26 +105,46 @@ export default struct BudgetList {
     Stack(){
       Column() {
         // 列表显示部分
-        List({ initialIndex: 0 }) {
+        List() {
           ForEach(this.filteredArr, (item:Bill) => {
             ListItem() {
-              Row() {
-                Column() {
-                  Text(item.label).fontSize(20)
-                  Text(` ${DateUtil.formatDateMore(item.date)}`).grayText() // 显示月份
+              Column() {
+                Row(){
+                  Column({space:5}) {
+                    Text(item.label).fontSize(20)
+                    Text(` ${DateUtil.formatDateMore(item.date)}`).grayText() // 显示月份
+                  }.alignItems(HorizontalAlign.Start)
+                  Blank()
+                  Column({space:5}){
+                    if (item.isExpend) {
+                      Text(`${item.amount}元`).fontSize(18)
+                        .fontColor(Color.Gray)
+                      Text('支出')
+                        .fontColor(Color.Gray)
+                        .fontSize(12)
+
+                    } else {
+                      Text(`${item.amount}元`).fontSize(18)
+                        .fontColor($r('app.color.primary_color'))
+                      Text('收入')
+                        .fontColor($r('app.color.contrast_primary_color'))
+                        .fontSize(12)
+                    }
+                  }
                 }
-                Blank()
-                Text(`${item.amount}元`).fontSize(18)
+                .padding(5)
+                .width('100%')
+                Divider().color('#cfcfcf').strokeWidth(1)
               }
-              .padding(10)
-              .width('100%')
-              .height(80)
+              // .backgroundColor('red')
+              // Divider({strokeWidth:5,startMargin:20,endMargin:20,color:'#36d'})
             }
             .swipeAction({end: this.DeleteButton(item.id)}) // 右划删除
           }, (item) => item.id) // 确保ForEach的键是唯一的
-        }.divider({strokeWidth:1,startMargin:20,endMargin:20,color:'#ffe9f0f0'})
-        .height(600)
+        }
       }
+      .height(500)
+      // .backgroundColor('green')
     }
   }
 }

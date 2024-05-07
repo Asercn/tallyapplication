@@ -7,14 +7,28 @@ export default struct Middle{
   @Consume sumIncome:number
   @Consume sumExpenditure:number
   @Consume  counter:number
-  // @Consume newMonthL:string
+  @Consume newMonth:string
 
   @StorageProp('selectedDate') selectedDate:number = DateUtil.beginTimeOfDay(new Date())
-  controller:CustomDialogController = new CustomDialogController({
-    builder:DatePickerDialog({
-      selectedDate:new Date(this.selectedDate)
-    })  // 数据回显
-  })
+
+  // controller:CustomDialogController = new CustomDialogController({
+  //   builder:DatePickerDialog({
+  //     selectedDate:new Date(this.selectedDate)
+  //   })  // 数据回显
+  // })
+  // 创建对话框控制器，并传递回调函数
+  controller: CustomDialogController = new CustomDialogController({
+    builder: DatePickerDialog({
+      selectedDate: new Date(),
+      onDateSelected: this.handleDateSelected.bind(this), // 传递回调
+    }),
+  });
+  // 处理所选日期的函数
+  handleDateSelected(selectedDate: Date) {
+    this.newMonth = selectedDate.toDateString(); // 转换为需要的格式
+    console.log('Middle','newMonth',this.newMonth)
+    // 其他逻辑处理
+  }
 
 
 
@@ -62,17 +76,20 @@ export default struct Middle{
           Image($r('app.media.ic_public_arrow_down_0')).width(19)
         }
       }.justifyContent(FlexAlign.SpaceAround).width('100%')
+      .height(80)
+      Divider().color(Color.Gray).strokeWidth(3)
       Row(){
         Text(DateUtil.formatDate(this.selectedDate))
           .onClick(()=>this.controller.open())
         Row(){
-          Text(`支出￥${this.sumExpenditure}`).fontSize(10).fontWeight(FontWeight.Bold)
+          Text(`支出￥${this.sumExpenditure}`).fontSize(12).fontWeight(FontWeight.Bold)
         }
         Row(){
-          Text(`收入￥${this.sumIncome}`).fontSize(10).fontWeight(FontWeight.Bold)
+          Text(`收入￥${this.sumIncome}`).fontSize(12).fontWeight(FontWeight.Bold)
         }
-      }.justifyContent(FlexAlign.SpaceAround).width('98%')
-    }.width('98%').backgroundColor('#CFCFCF')
+      }.justifyContent(FlexAlign.SpaceAround).width('100%').height(80)
+
+    }.width('96%').padding(10).borderRadius(15).shadow({radius:15,color:Color.Gray})
   }
 }
 
