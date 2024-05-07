@@ -13,7 +13,7 @@ import DateUtil from '../common/utils/DateUtil'
 // import { Calendar } from '@ohos.util.';
 
 
-@Entry
+
 @Component
 export default struct ItemIndex {
   @State @Watch('aboutToAppear') showPanel:boolean = false
@@ -32,6 +32,7 @@ export default struct ItemIndex {
   @State expenditure:number = 0 //本月支出
   @Provide budget:number = 0 //本月预算
 
+  @Consume @Watch('aboutToAppear') currentIndex:number
   @Provide @Watch('aboutToAppear') count:number = 0
 
   //接收今日消费页面数据的数据的数组
@@ -94,7 +95,7 @@ export default struct ItemIndex {
     Stack(){
       Column({space:10}){
         //1.返回按钮展示
-        this.Header()
+        // this.Header()
 
         //2.顶部剩余预算展示
         ItemShow({restTodayBudget:this.restTodayBudget})
@@ -141,7 +142,7 @@ export default struct ItemIndex {
       Image($r('app.media.ic_public_add_norm_filled'))
         .fillColor($r('app.color.primary_color'))
         .width(70)
-        .position({x:260,y:700})
+        .position({x:260,y:650})
         .onClick(()=>{
           //点击后跳转
           this.showPanel = true
@@ -150,21 +151,6 @@ export default struct ItemIndex {
 
   }
 
-  // //暂定
-  // async handleTodayArr(arr:Bill[]){
-  //   //1.获取当日数据
-  //   arr = await BillService.getBill()
-  //
-  //   //2.遍历数据,得到从前一天后每天的预算
-  //   //2.1获取当前月份
-  //   let date = new Date()
-  //
-  //   //2.2获取当前月份已经消费的数据
-  //   let minDate = new Date(date.getFullYear(),date.getMonth(),0) //按最小日期(月初)
-  //   let maxDate = new Date(date.getFullYear(),date.getMonth(),date.getDate()<0?0:(date.getDate()+1)) //按最小日期(前一天)
-  //
-  //   BillService.listByDateBetween(minDate,maxDate)
-  // }
 
   //处理面板消费描述输入的信息的方法
   @Builder consumeDescribe(){

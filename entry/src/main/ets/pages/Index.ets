@@ -33,7 +33,16 @@ struct Index {
       TabContent(){
         // 账单记录页面
         Column(){
+          // Image($r('app.media.ic_public_add_norm_filled'))
+          //   .fillColor($r('app.color.primary_color'))
+          //   .width(70)
+          //   .position({x:260,y:650})
+          //   .onClick(()=>{
+          //     //点击后跳转
+          //     this.showPanel = true
+          //   })
           this.header({title:'账单记录'})
+
           HistoricalBilling()
         }
         .width('100%')
@@ -42,8 +51,14 @@ struct Index {
       }
       .tabBar(this.TabBuilder('账单记录',1,$r('app.media.historicalBill_select'),$r('app.media.historicalBill')))
       TabContent(){
-        // 财务管理页面
-        ItemIndex()
+        Column({space:10}){
+          this.header({title:'财务管理'})
+          // 财务管理页面
+          ItemIndex()
+        }
+        .width('100%')
+        .height('100%')
+
       }
       .tabBar(this.TabBuilder('财务管理',2,$r('app.media.financial_select'),$r('app.media.financial')))
     }
