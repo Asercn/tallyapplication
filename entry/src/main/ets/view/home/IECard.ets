@@ -44,7 +44,7 @@ export default struct IECard {
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
         Row(){
-          Text(`预算:${this.total}元`)
+          Text(`组预算:${this.total}元`)
             .fontColor(Color.Gray).fontSize(12)
         }
         .layoutWeight(1)
