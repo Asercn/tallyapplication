@@ -37,46 +37,51 @@ struct CustomDialogChart{
 
   build(){
     Column({space:10}){
-      /**
-       * 绘制本月消费数据占全年的比例
-       */
-      Stack(){
-        Progress({
-          value:this.sumMonth,
-          total:this.sumYear,
-          type:ProgressType.Ring
-        })
-          .width(200)
-          .style({
-            strokeWidth:10
-          })
 
-        Column(){
-          Text('年度消费占比')
-            .fontSize(20)
-          Text(`${(100*this.sumMonth/this.sumYear).toFixed(2)}/%`)
-            .fontSize(15)
+      Swiper(){
+        /**
+         * 绘制本月消费数据占全年的比例
+         */
+        Stack(){
+          Progress({
+            value:this.sumMonth,
+            total:this.sumYear,
+            type:ProgressType.Ring
+          })
+            .width(200)
+            .style({
+              strokeWidth:10
+            })
+
+          Column(){
+            Text('年度消费占比')
+              .fontSize(20)
+            Text(`${(100*this.sumMonth/this.sumYear).toFixed(2)}/%`)
+              .fontSize(15)
+          }
+        }
+
+        Stack(){
+          Progress({
+            value:this.sumDay,
+            total:this.sumMonth,
+            type:ProgressType.Ring
+          })
+            .width(200)
+            .style({
+              strokeWidth:10
+            })
+
+          Column(){
+            Text('月份消费占比')
+              .fontSize(20)
+            Text(`${(100*this.sumDay/this.sumMonth).toFixed(2)}/%`)
+              .fontSize(15)
+          }
         }
       }
+      .height(400)
 
-      Stack(){
-        Progress({
-          value:this.sumDay,
-          total:this.sumMonth,
-          type:ProgressType.Ring
-        })
-          .width(200)
-          .style({
-            strokeWidth:10
-          })
-
-        Column(){
-          Text('月份消费占比')
-            .fontSize(20)
-          Text(`${(100*this.sumDay/this.sumMonth).toFixed(2)}/%`)
-            .fontSize(15)
-        }
-      }
 
       Button('关闭')
         .onClick(()=>{
